@@ -10,21 +10,21 @@
 #import "CCSprite.h"
 
 typedef enum {
-  blk_spade,
-  blk_heart,
-  blk_diamond,
-  blk_clover,
-  blk_cross,
-  blk_circle
+  blk_heart   = 0, // 
+  blk_clover  = 1, //
+  blk_cross   = 2, // 
+  blk_spade   = 3,
+  blk_diamond = 4,
+  blk_circle  = 5
 } _block_type;
 
 typedef enum {
-  blk_color_orange,
-  blk_color_yellow,
-  blk_color_cyan,
-  blk_color_green,
-  blk_color_red,
-  blk_color_purple
+  blk_color_orange = 0,
+  blk_color_yellow = 1,
+  blk_color_cyan = 2,
+  blk_color_green = 3,
+  blk_color_red = 4,
+  blk_color_purple = 5
 } _block_color;
 
 @interface aBlock : CCSprite {
@@ -39,7 +39,12 @@ typedef enum {
 @property (nonatomic, retain) CCSprite *shadow;
 @property (nonatomic, retain) CCSprite *shape;
 
+@property (readonly) _block_type blkType;
+@property (readonly) _block_color blkColor;
+
 -(void) putBlockAtPosition:(id)layer position:(CGPoint)customPosition type:(_block_type)blockType color:(_block_color)blockColor;
+-(NSString *)blockTypeFileName:(_block_type)blockType blockColor:(_block_color)blockColor;
+
 //-(void) initShadow:(id)layer;
 
 @end
