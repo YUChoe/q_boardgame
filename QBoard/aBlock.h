@@ -13,9 +13,10 @@ typedef enum {
   blk_heart   = 0, // 
   blk_clover  = 1, //
   blk_cross   = 2, // 
-  blk_spade   = 3,
+  blk_circle  = 3, //
+  blk_star  = 5,
   blk_diamond = 4,
-  blk_circle  = 5
+
 } _block_type;
 
 typedef enum {

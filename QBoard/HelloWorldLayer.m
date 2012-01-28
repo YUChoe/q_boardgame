@@ -115,34 +115,137 @@
 {
   // 먼저 초기화
   [self removeReadyBlocks];
-  
-  blackBg = [CCSprite spriteWithFile:@"bg_black_48*288.png"];
-  //오른쪽 구석인데.. 
-  CGSize screenSize = [[CCDirector sharedDirector] winSize];
-  blackBg.position = CGPointMake(screenSize.width - 48/2, screenSize.height/2);
-  // 너무 오른쪽에 붙었나 싶기는 한데 약간 투명하게 해 봐야지 
-  blackBg.opacity = 128;
-  [self addChild:blackBg z:6];
+
+  if ([self getChildByTag:101] == NULL)
+  {
+    blackBg = [CCSprite spriteWithFile:@"bg_black_48*288.png"];
+    //오른쪽 구석인데.. 
+    CGSize screenSize = [[CCDirector sharedDirector] winSize];
+    blackBg.position = CGPointMake(screenSize.width - 48/2, screenSize.height/2);
+    // 너무 오른쪽에 붙었나 싶기는 한데 약간 투명하게 해 봐야지 
+    blackBg.opacity = 128;
+    [self addChild:blackBg z:26 tag:101];
+  }
   
   for (int idx=0; idx<[blkQueue count]; idx++) 
   {
     if (idx > 5 || idx >= [blkQueue count]) break; 
     CCSprite *b = [CCSprite spriteWithFile:@"woodenBlock_48x48.png"];
     b.position = CGPointMake(blackBg.position.x, blackBg.position.y - 48*2 - 48/2 + idx*48);
-    [self addChild:b z:7];
+    [self addChild:b z:27];
     
     CCSprite *s = [CCSprite spriteWithFile:[self blockTypeFileName:[[[blkQueue objectAtIndex:idx] objectAtIndex:1] intValue] blockColor:[[[blkQueue objectAtIndex:idx] objectAtIndex:2] intValue]]];
     s.position = b.position;
-    [self addChild:s z:8];
+    [self addChild:s z:28];
      
     NSMutableArray *rBUnit = [NSMutableArray arrayWithObjects:b, [NSNumber numberWithInt:idx], s, nil];
     [readyBlocks addObject:rBUnit];
-    //break;
   }
+  // 아무것도 선택하지 않은 상태이니 
+  selectedBlock = -1;
 }
 //
 
-// 위치 x,y에 블록큐0을 놓을 수 있는지 검사하는 메소드 
+// x,y 위치에서 dir 방향으로 블록을 놓을 수 있는 지 검사하는 로직 
+-(BOOL) possibleTo:(NSString*)dir blockType:(_block_type)tb blockColor:(_block_color)cb x:(int)x y:(int)y
+{
+  if (map[x][y]!=0) return NO; // 이미 블록이 있으면 여기 못둠 
+  
+  NSMutableArray *nBlocks = [[NSMutableArray alloc] init];
+  
+  if (dir == @"North")
+  {
+    if ((y+1) < 40 && map[x][y+1] == 0) { //NSLog(@"[%d][%d]-%@=빈칸", x, y, dir); 
+      return YES; }    // 바로 빈칸이면 둘 수 있음 
+    for(int yy=y+1; yy<40; yy++)
+    { 
+      if (map[x][yy] == 0) break; // 빈칸이 나오면 루프 정지
+      NSMutableArray *bu = [blocks objectAtIndex:(map[x][yy]-1)];
+      //if ([[bu objectAtIndex:3] intValue] != tb) break; // 중간에 모양이 바뀌면 루프 정지 
+      // 중간에 색이 바뀌면?
+      // 0:blocktype, 1:blockcolor
+      NSMutableArray *type_color = [NSMutableArray arrayWithObjects:[bu objectAtIndex:3], [bu objectAtIndex:4], nil];
+      [nBlocks addObject:type_color];
+    }
+  } else if (dir == @"South")
+  {
+    if (y-1 >= 0 && map[x][y-1]==0) { //NSLog(@"[%d][%d]-%@=빈칸", x, y, dir); 
+      return YES; }
+    for(int yy=y-1; yy>=0; yy--)
+    {
+      if (map[x][yy] == 0) break; 
+      NSMutableArray *bu = [blocks objectAtIndex:(map[x][yy]-1)];
+      //if ([[bu objectAtIndex:3] intValue] != tb) break;
+      NSMutableArray *type_color = [NSMutableArray arrayWithObjects:[bu objectAtIndex:3], [bu objectAtIndex:4], nil];
+      [nBlocks addObject:type_color];
+    }
+  } else if (dir == @"East")
+  {
+    if (x+1 < 40 && map[x+1][y]==0) { //NSLog(@"[%d][%d]-%@=빈칸", x, y, dir); 
+      return YES; }
+    for(int xx=x+1; xx<40; xx++)
+    {
+      if (map[xx][y] == 0) break;
+      NSMutableArray *bu = [blocks objectAtIndex:(map[xx][y]-1)];
+      NSMutableArray *type_color = [NSMutableArray arrayWithObjects:[bu objectAtIndex:3], [bu objectAtIndex:4], nil];
+      [nBlocks addObject:type_color];
+    }
+  } else if (dir == @"West")
+  {
+    if (x-1 >= 0 && map[x-1][y]==0) { //NSLog(@"[%d][%d]-%@=빈칸", x, y, dir); 
+      return YES; }
+    for(int xx=x-1; xx>=0; xx--)
+    {
+      if (map[xx][y] == 0) break;
+      NSMutableArray *bu = [blocks objectAtIndex:(map[xx][y]-1)];
+      NSMutableArray *type_color = [NSMutableArray arrayWithObjects:[bu objectAtIndex:3], [bu objectAtIndex:4], nil];
+      [nBlocks addObject:type_color];
+    }
+  }
+  
+  if ([nBlocks count]==0) { NSLog(@"[%d][%d]-%@=빈칸2", x, y, dir); return YES; }  
+
+  
+  NSLog(@"[%d][%d]-%@=빈칸아님", x, y, dir); 
+  // 빈칸이 아닌 경우
+  if ([[[nBlocks objectAtIndex:0] objectAtIndex:0] intValue] == tb)  // 블록이 모양이 일치하는가? 
+  {
+    NSLog(@"[%d][%d]의 %@ 쪽 블록 모양이 일치", x,y,dir);
+    for(NSMutableArray *type_color in nBlocks)
+    {
+      // 이 중에 색이 일치하는게 하나도 없어야 함..
+      NSLog(@"색 비교 %d:%d", [[type_color objectAtIndex:1] intValue], cb);
+      if ([[type_color objectAtIndex:1] intValue] == cb) return NO;
+      
+      // 모양이 바뀌면 안됨
+      NSLog(@"모양비교 %d:%d", [[type_color objectAtIndex:0] intValue], tb);      
+      if ([[type_color objectAtIndex:0] intValue] != tb) return NO;
+    }
+    // 결격사유 없음 
+    return YES; 
+  } else 
+  if ([[[nBlocks objectAtIndex:0] objectAtIndex:1] intValue] == cb)  // 바로 위 블록이 색이 일치 하는가? 
+  {
+    NSLog(@"[%d][%d]의 %@ 쪽 블록 색이 일치", x,y,dir);
+    for(NSMutableArray *type_color in nBlocks)
+    {
+      // 이 중에 같은 모양이 하나도 없어야 함 
+      NSLog(@"모양비교 %d:%d", [[type_color objectAtIndex:0] intValue], tb);
+      if ([[type_color objectAtIndex:0] intValue] == tb) return NO;
+      //근데 색이 바뀌면 안됨 
+      NSLog(@"색 비교 %d:%d", [[type_color objectAtIndex:1] intValue], cb);
+      if ([[type_color objectAtIndex:1] intValue] != cb) return NO;
+    }
+    return YES; 
+  }
+  
+//  NSLog(@"조건을 모두 통과 해서 [%d][%d]의 %@에 둘 수 있음 ", x,y, dir);
+  
+  return NO;
+}
+
+// 이 메소드가 핵심 !!
+// 위치 x,y에 블록을 상하좌우 방향으로 놓을 수 있는지 검사하는 메소드 
 -(BOOL) possibleGuess:(int)idx x:(int)x y:(int)y
 {
   // 범위 체크 
@@ -152,36 +255,11 @@
   _block_type tb = [[[blkQueue objectAtIndex:idx] objectAtIndex:1] intValue];
   _block_color cb = [[[blkQueue objectAtIndex:idx] objectAtIndex:2] intValue];
 
-  // 현재 위치에 놓을 수 있으면 YES를 리턴 
-  //NSLog(@"possibleGuess 상");
-  int posValue = map[x][y+1];
-  if (posValue != 0)     // 둘 곳(x,y) 의 위가 0(비어있으면) 다음 검사
-  { 
-    // 블록이 있다면 색이나 모양이 같은지?
-    if ([[[blocks objectAtIndex:posValue-1] objectAtIndex:3] intValue] == tb 
-        || [[[blocks objectAtIndex:posValue-1] objectAtIndex:4] intValue] == cb) return YES;  
-  }
-  //NSLog(@"possibleGuess 하");
-  posValue = map[x][y-1];
-  if (posValue != 0) 
-  {
-    if ([[[blocks objectAtIndex:posValue-1] objectAtIndex:3] intValue] == tb 
-        || [[[blocks objectAtIndex:posValue-1] objectAtIndex:4] intValue] == cb) return YES;  
-  }
-  //NSLog(@"possibleGuess 좌");
-  posValue = map[x-1][y];
-  if (posValue != 0) 
-  {
-    if ([[[blocks objectAtIndex:posValue-1] objectAtIndex:3] intValue] == tb 
-        || [[[blocks objectAtIndex:posValue-1] objectAtIndex:4] intValue] == cb) return YES;  
-  }
-  //NSLog(@"possibleGuess 우");
-  posValue = map[x+1][y];
-  if (posValue != 0) 
-  {
-    if ([[[blocks objectAtIndex:posValue-1] objectAtIndex:3] intValue] == tb 
-        || [[[blocks objectAtIndex:posValue-1] objectAtIndex:4] intValue] == cb) return YES;  
-  }
+  if ([self possibleTo:@"North" blockType:tb blockColor:cb x:x y:y] == YES 
+      && [self possibleTo:@"South" blockType:tb blockColor:cb x:x y:y] == YES 
+      && [self possibleTo:@"East" blockType:tb blockColor:cb x:x y:y] == YES 
+      && [self possibleTo:@"West" blockType:tb blockColor:cb x:x y:y] == YES  
+      ) { return YES; }
 
   return NO;
 }
@@ -219,7 +297,7 @@
 {
   NSString *blockTypeAsString = @"";
   if (blockType == blk_heart)        { blockTypeAsString = @"heart"; }
-  else if (blockType == blk_spade)   { blockTypeAsString = @"spade"; } 
+  else if (blockType == blk_star)   { blockTypeAsString = @"star"; } 
   else if (blockType == blk_diamond) { blockTypeAsString = @"diamond"; } 
   else if (blockType == blk_clover)  { blockTypeAsString = @"clover"; } 
   else if (blockType == blk_cross)   { blockTypeAsString = @"cross"; } 
@@ -245,8 +323,7 @@
   
   for (int s = 1; s<=2; s++) // 2set
   {
-    //for (int shape=0; shape<=5; shape++) // 6모양
-    for (int shape=0; shape<=2; shape++) // test
+    for (int shape=0; shape<=5; shape++) // 6모양
     {
       for (int colour=0; colour<=5; colour++) // 6색 그냥 간지나 보이게 영국식 colour
       {
@@ -291,22 +368,15 @@
     CCSprite *linenBG = [CCSprite spriteWithFile:@"greenLinen_640x640.jpg"];
     linenBG.position = ccp( screenSize.width /2 , screenSize.height/2 ); // center 
     //[linenBG setScale:3.0f];
-    [self addChild:linenBG z:0];
+    [self addChild:linenBG z:0 tag:100];
     // 40*40 전체에 맞게 확장하면 안그래도 jpg파일 용량이 300k 넘어 가는데, 성능에 문제가 될 수도?
     // 차라리 카메라 이동 할 때 다시 센터로 돌아가면? 
     
     //
     [self initAndShuffleBlocks]; // 1stage 에 사용 될 블록 정의 64개 
-    gameStatus = 0; // 스테이지 시작 
-    
+
     [self realignSixBlocksInQueue];
     [self setBlock:0 x:20 y:20];    // 먼저 센터에 기준 블록 하나를 위의 블록큐에서 
-
-    gameStatus = 1; // 초기화 완료 
-    //
-    
-    //[self mainGameLoop]; // game status 를 인자로 넘길 수도 있을테지만 1scene으로 작동되는 게임이니까 
-    // 위의 0, 1도 게임루프 안에 들어가 있으면 일관성 있을 듯 
 	}
   
 	return self;
@@ -372,6 +442,13 @@
 
 -(void) removeReadyBlocks
 {
+  // 다 지울게 아니라 애니메이션을 여기에 
+  // TODO: 놓은 블록 인덱스를 알고 있으니 그놈을 지우고 
+  // 그것 보다 위에 있는 블록 5번까지에 대해 48픽셀 만큼 아래로 떨어지는 애니메이션(1초정도?)
+  // 그리고 쿵 소리 
+  // 그리고 나서 순식간에 지워 버리면 티 안남 
+  NSLog(@"지우고 애니메이션 할 블록인덱스: %d", selectedBlock);
+  //만약에 다른걸 선택해서 지운 거면 ? 두가지는 구분 되어야 함 
   for (NSMutableArray *rBUnit in readyBlocks) 
   {
     [self removeChild:[rBUnit objectAtIndex:0] cleanup:YES];
@@ -379,6 +456,7 @@
   }
   readyBlocks = [[NSMutableArray alloc] init]; // reset
 }
+
 
 -(void) mainGameLoop
 {
@@ -449,52 +527,55 @@
   {
     CGPoint touchedlocation = [[CCDirector sharedDirector] convertToGL: [touch locationInView:touch.view]];
     // 오른쪽 6개 블록 중에서 선택이 되었는가? 
-    if (CGRectContainsPoint(blackBg.boundingBox, touchedlocation)) 
+    if ([self collusionWithSprite:blackBg location:touchedlocation])
     {
-      
+      NSLog(@"touch on blockQueue");
       for (NSMutableArray *rbUnit in readyBlocks) 
       {
         CCSprite *rb = [rbUnit objectAtIndex:0];
-        if (CGRectContainsPoint(rb.boundingBox, touchedlocation)) 
+        //if (CGRectContainsPoint(rb.boundingBox, touchedlocation)) 
+        if ([self collusionWithSprite:rb location:touchedlocation])
         {
           // 선택 !
           selectedBlock = [[rbUnit objectAtIndex:1] intValue];
           NSLog(@"%d touched", selectedBlock);
           [self removeHintBlocks];
           [self showHintBlocks:selectedBlock];             
-
+          
           return;
         }
-      }
+      } // of for 
     } else {
       // 일반 필드에서 선택 
       // 힌트 블록 중에서 터치 되었는가?
+      if (selectedBlock == -1) return;
       
-     for (NSMutableArray *myBlkUnit in hintBlocks)
-     {
-       CCSprite *myBlk = [myBlkUnit objectAtIndex:0];
+      for (NSMutableArray *myBlkUnit in hintBlocks)
+      {
+        CCSprite *myBlk = [myBlkUnit objectAtIndex:0];
 
-       if ([self collusionWithSprite:myBlk location:touchedlocation] == YES) 
-       {
-         // myblk 자리에 블록을 놓고 
-         int xx = [[myBlkUnit objectAtIndex:1] intValue];
-         int yy = [[myBlkUnit objectAtIndex:2] intValue];
-         // 선택 된 블록의 인덱스는? 
-         [self setBlock:selectedBlock x:xx y:yy];
-         // TODO
-         map_mask[xx][yy] = 2;
-         
-         // 오른쪽 대기블록6개를 재배치 하기 위해 날려야 됨 
-         //gameStatus = 3;
-         //selectedBlock = 0;
-         [self realignSixBlocksInQueue];
-         break;
-       } else {
-         //NSLog(@"엉뚱한 클릭 ");
-       }
-     } // of for 
+        if ([self collusionWithSprite:myBlk location:touchedlocation] == YES) 
+        {
+          
+          // myblk 자리에 블록을 놓고 
+          int xx = [[myBlkUnit objectAtIndex:1] intValue];
+          int yy = [[myBlkUnit objectAtIndex:2] intValue];
+          // 선택 된 블록의 인덱스는? 
+          [self setBlock:selectedBlock x:xx y:yy];
+          // TODO
+          map_mask[xx][yy] = 2;
+          
+          // 오른쪽 대기블록6개를 재배치 하기 위해 날려야 됨 
+          //gameStatus = 3;
+          //selectedBlock = 0;
+          [self realignSixBlocksInQueue];
+          break;
+        } else {
+          //NSLog(@"엉뚱한 클릭 ");
+        }
+      } // of for 
     } 
-
+    
   } // of if touch == YES
 }
 //
@@ -518,6 +599,19 @@
     
     diffCamera = ccpAdd(self.position, diff);
     [self setPosition: ccpAdd(self.position, diff)];
+    
+    
+    // test 
+    blackBg.position = ccpAdd(blackBg.position, ccp(-diff.x, -diff.y));
+    [self getChildByTag:100].position = ccpAdd([self getChildByTag:100].position, ccp(-diff.x, -diff.y));
+    for (NSMutableArray *rbUnit in readyBlocks)
+    {
+      CCSprite *rbBody = [rbUnit objectAtIndex:0];
+      CCSprite *rbShape = [rbUnit objectAtIndex:2]; 
+      rbBody.position = ccpAdd(rbBody.position, ccp(-diff.x, -diff.y));
+      rbShape.position = ccpAdd(rbShape.position, ccp(-diff.x, -diff.y));      
+    }
+    //
   }
 }
 

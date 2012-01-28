@@ -26,7 +26,7 @@
 {
   NSString *blockTypeAsString = @"";
   if (blockType == blk_heart)        { blockTypeAsString = @"heart"; }
-  else if (blockType == blk_spade)   { blockTypeAsString = @"spade"; } 
+  else if (blockType == blk_star)   { blockTypeAsString = @"star"; } 
   else if (blockType == blk_diamond) { blockTypeAsString = @"diamond"; } 
   else if (blockType == blk_clover)  { blockTypeAsString = @"clover"; } 
   else if (blockType == blk_cross)   { blockTypeAsString = @"cross"; } 
