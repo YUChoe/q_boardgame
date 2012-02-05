@@ -140,7 +140,7 @@
 		EE6668BE14CD851C00582350 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6668BD14CD851C00582350 /* main.m */; };
 		EE6668C114CD851C00582350 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6668C014CD851C00582350 /* AppDelegate.m */; };
 		EE6668C414CD851C00582350 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6668C314CD851C00582350 /* RootViewController.m */; };
-		EE6668C714CD851C00582350 /* HelloWorldLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6668C614CD851C00582350 /* HelloWorldLayer.m */; };
+		EE6668C714CD851C00582350 /* GamePlayLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6668C614CD851C00582350 /* GamePlayLayer.m */; };
 		EE6668CF14CD856400582350 /* greenLinen_640x640.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EE6668CE14CD856400582350 /* greenLinen_640x640.jpg */; };
 		EE6668D114CD857400582350 /* woodenBlock_64x64.png in Resources */ = {isa = PBXBuildFile; fileRef = EE6668D014CD857400582350 /* woodenBlock_64x64.png */; };
 		EECA773A14D1369700654358 /* blockType_cross_cyan.png in Resources */ = {isa = PBXBuildFile; fileRef = EECA773414D1369700654358 /* blockType_cross_cyan.png */; };
@@ -426,8 +426,8 @@
 		EE6668C014CD851C00582350 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		EE6668C214CD851C00582350 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		EE6668C314CD851C00582350 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		EE6668C514CD851C00582350 /* HelloWorldLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelloWorldLayer.h; sourceTree = "<group>"; };
-		EE6668C614CD851C00582350 /* HelloWorldLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelloWorldLayer.m; sourceTree = "<group>"; };
+		EE6668C514CD851C00582350 /* GamePlayLayer.h */ = {isa = PBXFileReference; path = GamePlayLayer.h; sourceTree = "<group>"; };
+		EE6668C614CD851C00582350 /* GamePlayLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GamePlayLayer.m; sourceTree = "<group>"; };
 		EE6668C814CD851C00582350 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
 		EE6668CE14CD856400582350 /* greenLinen_640x640.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = greenLinen_640x640.jpg; sourceTree = "<group>"; };
 		EE6668D014CD857400582350 /* woodenBlock_64x64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = woodenBlock_64x64.png; sourceTree = "<group>"; };
@@ -559,8 +559,8 @@
 				EE6668C014CD851C00582350 /* AppDelegate.m */,
 				EE6668C214CD851C00582350 /* RootViewController.h */,
 				EE6668C314CD851C00582350 /* RootViewController.m */,
-				EE6668C514CD851C00582350 /* HelloWorldLayer.h */,
-				EE6668C614CD851C00582350 /* HelloWorldLayer.m */,
+				EE6668C514CD851C00582350 /* GamePlayLayer.h */,
+				EE6668C614CD851C00582350 /* GamePlayLayer.m */,
 				EEDFC31214CF8FC700F9B59D /* aBlock.h */,
 				EEDFC31314CF8FC700F9B59D /* aBlock.m */,
 				EE6668C814CD851C00582350 /* GameConfig.h */,
@@ -1187,7 +1187,7 @@
 				EE6668BE14CD851C00582350 /* main.m in Sources */,
 				EE6668C114CD851C00582350 /* AppDelegate.m in Sources */,
 				EE6668C414CD851C00582350 /* RootViewController.m in Sources */,
-				EE6668C714CD851C00582350 /* HelloWorldLayer.m in Sources */,
+				EE6668C714CD851C00582350 /* GamePlayLayer.m in Sources */,
 				EEDFC31414CF8FC700F9B59D /* aBlock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
