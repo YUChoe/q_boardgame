@@ -24,17 +24,27 @@
 
   int selectedBlock;      // 선택한 블록 
   
-  CCSprite *mB;           // 내가 붙일려고 하는 블록  
-  CCSprite *mBshadow;     // 's shadow 
-  CCSprite *warningBlock; // 경고 할 때 빨간 색으로 
+//  CCSprite *mB;           // 내가 붙일려고 하는 블록  
+//  CCSprite *mBshadow;     // 's shadow 
+//  CCSprite *warningBlock; // 경고 할 때 빨간 색으로 
   // 위의 것들을 묶어서 하나의 클래스로 만들어야 댐 .. 무늬 포함
   
+  int myScore;
+  int oppScore;
+  BOOL myTurn; // 내 턴이면 YES 상대 턴이면 NO
   CCSprite *blackBg; // 대기중 블록을 위한 오른쪽 자리 
   NSMutableArray *readyBlocks; // 블록큐 0-5 인데 굳이 필요 할까 ? 화면에 출력하고 애니메이션 하기 위함이긴 한데 
+  NSMutableArray *opponentReadyBlocks; // 상대방의 블록 큐 
   
-  int gameStatus; // 게임 현재 상태 0 초기화 부터 시작  
-  CGPoint diffCamera;
+  BOOL animateRBlocks; // 레디블록 애니메이션 중이면 같은 이벤트 발생 안함 
+  BOOL amIopponent; // 온라인 대전 등을 할 때 내가 클라이언트 모드인가를 표시 ?
+  
+  CCSprite *passButton; // 오른쪽 아래 패스 버튼 
+  
+  CGPoint diffCamera; // 스크롤 때문에 이동 된 좌표 차이 
 
+  BOOL onAlert; // alert창을 modal로 만들기 위한 플래스. 터치 이벤트에서 onAlert가 YES면 다른 이벤트 발생 안하도록 함 
+  int popMode; // 0은 일반 상태 1은 둘수 없습니다 2는 패스하겠습니까? onAlert를 대신할 수도 
 }
 
 // returns a CCScene that contains the HelloWorldLayer as the only child
@@ -42,10 +52,16 @@
 
 -(void)setBlock:(int)idx x:(int)x y:(int)y;
 -(CGPoint) fromMapToPosition:(int)x y:(int)y; // xy 좌표로 ccp 값을 돌려 받는 메쏘드
+
+-(BOOL) possibleTo:(NSString*)dir blockType:(_block_type)tb blockColor:(_block_color)cb x:(int)x y:(int)y;
 -(BOOL) possibleGuess:(int)idx x:(int)x y:(int)y;
+
 -(NSString *)blockTypeFileName:(_block_type)blockType blockColor:(_block_color)blockColor; // 중복정의 
 -(void) realignSixBlocksInQueue;
 -(void) removeReadyBlocks;
 -(void) removeHintBlocks;
--(void)mainGameLoop; // 메인 게임 루프 status 가 변화 될 때 마다 호출 됨  
+-(void) popAlert1;
+-(void) popAlert2;
+//-(void) popAlert3;
+
 @end
