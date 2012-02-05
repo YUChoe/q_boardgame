@@ -829,8 +829,8 @@
 //
 
 // 두손가락으로 스크롤이 더 나을 듯? 
--(void) ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-  
+-(void) ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event 
+{
   if (onAlert == YES) return;
   
   UITouch *myTouch = [touches anyObject];
@@ -852,11 +852,16 @@
     [self setPosition: ccpAdd(self.position, diff)];
     
     
-    // 
+    // 스크롤 되지 않아야 할 부분들 #5, #16 
+    // 레디블록의 터치 이벤트 받는 영역 
     blackBg.position = ccpAdd(blackBg.position, ccp(-diff.x, -diff.y));
+    // 턴 패스 버튼 
     passButton.position = ccpAdd(passButton.position, ccp(-diff.x, -diff.y)); 
-    
+    // 백그라운드 이미지 #15 
     [self getChildByTag:100].position = ccpAdd([self getChildByTag:100].position, ccp(-diff.x, -diff.y));
+    // 점수 #16 
+    [self getChildByTag:300].position = ccpAdd([self getChildByTag:300].position, ccp(-diff.x, -diff.y));
+    // 내 레디블록들 #5
     for (NSMutableArray *rbUnit in readyBlocks)
     {
       CCSprite *rbBody = [rbUnit objectAtIndex:0];
@@ -864,7 +869,7 @@
       rbBody.position = ccpAdd(rbBody.position, ccp(-diff.x, -diff.y));
       rbShape.position = ccpAdd(rbShape.position, ccp(-diff.x, -diff.y)); 
     }
-    
+    // 상대방레디블록들 #5 
     for (NSMutableArray *rbUnit in opponentReadyBlocks)
     {
       CCSprite *rbBody = [rbUnit objectAtIndex:0];
@@ -872,6 +877,7 @@
       rbBody.position = ccpAdd(rbBody.position, ccp(-diff.x, -diff.y));
       rbShape.position = ccpAdd(rbShape.position, ccp(-diff.x, -diff.y)); 
     }    
+    
     //
   }
 }
