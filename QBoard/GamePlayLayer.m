@@ -94,10 +94,17 @@
   if (map_mask[x+1][y] != 2) map_mask[x+1][y] = 1;
   if (map_mask[x-1][y] != 2) map_mask[x-1][y] = 1;
 
-  [self realignSixBlocksInQueue]; // 블록을 놓았으니 큐 정리 + 애니메이션 
+  // 블록을 다 놓았으니
+  if (myTurn == YES) 
+  {
+   myScore = myScore + 1; // TODO: 연속해서 두는 경우 점수 증가 되어야 함  
+  } else {
+    oppScore = oppScore = 1;
+  }
   
-  //NSLog(@"map[%d][%d] = %d", x, y, map[x][y]);
-  //[self dump_map];
+  [self drawScore]; // 점수를 그리고 
+  [self realignSixBlocksInQueue]; //큐 정리 + 애니메이션 
+  
 }
 //
 
@@ -374,6 +381,22 @@
 }
 //
 
+//
+-(void) drawScore
+{
+  if ([self getChildByTag:300] != NULL) [self removeChildByTag:300 cleanup:YES];
+  
+  NSString *score_text = [NSString stringWithFormat:@"Score %03d : %03d", myScore, oppScore];
+  CCLabelTTF *score_label = [CCLabelTTF labelWithString:score_text
+                                            dimensions:CGSizeMake(200, 20) // width, height 
+                                             alignment:CCTextAlignmentCenter
+                                              fontName:@"Helvetica" 
+                                              fontSize:18];
+  score_label.position = ccp(48+90, 320-14);
+  [self addChild:score_label z:150 tag:300];
+}
+//
+
 // 스테이지 시작 할 때 블록의 6모양 * 6색 * 2벌 = 64개를 정의 하고 섞는 메소드 
 -(void) initAndShuffleBlocks
 {
@@ -510,6 +533,9 @@
     opponentReadyBlocks = [[NSMutableArray alloc] init];
     
     diffCamera = ccp(0,0); // 스크롤로 이동 된 카메라의 위치.. 터치 좌표를 상대좌표로 보정하기 위해 필요 
+    
+    myScore = 0;
+    oppScore = 0;
     
     // z:0 으로 배경 깔기 
     CGSize screenSize = [[CCDirector sharedDirector] winSize];

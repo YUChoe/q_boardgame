@@ -60,6 +60,7 @@
 -(void) realignSixBlocksInQueue;
 -(void) removeReadyBlocks;
 -(void) removeHintBlocks;
+-(void) drawScore;
 -(void) popAlert1;
 -(void) popAlert2;
 //-(void) popAlert3;
