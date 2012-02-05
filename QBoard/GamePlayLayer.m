@@ -420,6 +420,7 @@
   
   // 여기다 놓으면 화면 중앙이 아니라 스크롤 되기 전 중앙에 놓이게 될 텐데? 
   aWin.position = ccp( screenSize.width /2 +diffCamera.x, screenSize.height/2 +diffCamera.y); // center 
+  if (myTurn == NO) aWin.rotation = 180;
   [self addChild:aWin z:100 tag:250];
   
   CCLabelTTF *lbl_text = [CCLabelTTF labelWithString:@"선택 한 블록은 놓을 수 없습니다." 
@@ -429,14 +430,18 @@
                                             fontSize:18];
   
   lbl_text.position = ccp( [aWin boundingBox].size.width/2, [aWin boundingBox].size.height/2 + 20); // center 
-  //lbl_text.anchorPoint = ccp(320-280,10/2);
   lbl_text.color = ccc3(255, 255, 255); // white
   [aWin addChild:lbl_text z:101];
   
   CCSprite *ybtn = [CCSprite spriteWithFile:@"yesButton_126*42.png"];
-  //ybtn.position = ccp( [aWin boundingBox].size.width/2, 60);
-  ybtn.position = ccp( aWin.position.x, aWin.position.y - 50 );
-  //[aWin addChild:ybtn z:102 tag:251];
+  if (myTurn == NO)
+  {
+    ybtn.rotation = 180;
+    ybtn.position = ccp( aWin.position.x, aWin.position.y + 50 ); 
+  } else {
+    ybtn.position = ccp( aWin.position.x, aWin.position.y - 50 ); 
+  }
+
   [self addChild:ybtn z:102 tag:251];
 }
 
@@ -447,9 +452,8 @@
   popMode = 2;
   CCSprite *aWin = [CCSprite spriteWithFile:@"alert_background.png"];
   CGSize screenSize = [[CCDirector sharedDirector] winSize];
-  
-  // 여기다 놓으면 화면 중앙이 아니라 스크롤 되기 전 중앙에 놓이게 될 텐데? 
   aWin.position = ccp( screenSize.width /2 +diffCamera.x, screenSize.height/2 +diffCamera.y); // center 
+  if (myTurn == NO) aWin.rotation = 180;
   [self addChild:aWin z:100 tag:250];
   
   CCLabelTTF *lbl_text = [CCLabelTTF labelWithString:@"차례를 넘기겠습니까?" 
@@ -464,16 +468,19 @@
   [aWin addChild:lbl_text z:101];
   
   CCSprite *ybtn = [CCSprite spriteWithFile:@"yesButton_126*42.png"];
-  //ybtn.position = ccp(78, 60);
-  ybtn.position = ccp( aWin.position.x - 5 - 126/2 , aWin.position.y - 50);
-  //[aWin addChild:ybtn z:102 tag:251];
-  [self addChild:ybtn z:102 tag:251];
-  
   CCSprite *nbtn = [CCSprite spriteWithFile:@"noButton_126*42.png"];
-  //nbtn.position = ccp(126+88, 60);
-  nbtn.position = ccp( aWin.position.x +5 + 126/2 , aWin.position.y - 50);
+  if (myTurn == NO) {
+    ybtn.rotation = 180;
+    nbtn.rotation = 180;
+    ybtn.position = ccp( aWin.position.x + 5 + 126/2 , aWin.position.y + 50);
+    nbtn.position = ccp( aWin.position.x - 5 - 126/2 , aWin.position.y + 50);
+  } else {
+    ybtn.position = ccp( aWin.position.x - 5 - 126/2 , aWin.position.y - 50);
+    nbtn.position = ccp( aWin.position.x + 5 + 126/2 , aWin.position.y - 50);
+  }
+
+  [self addChild:ybtn z:102 tag:251];
   [self addChild:nbtn z:102 tag:252];
-  //[aWin addChild:nbtn z:102 tag:252];
 }
 
 
