@@ -30,20 +30,6 @@
 	return scene;
 }
 
-- (void) dump_map
-{
-  NSString *row = @"\n";
-  for (int x=0; x<40; x++)
-  {    
-    for (int y=0; y<40; y++)
-    {
-      if (y==0) row = [NSString stringWithFormat:@"%@\n%02d:", row, x];
-      row = [NSString stringWithFormat:@"%@[%02d]", row, map_mask[x][y]];
-    }
-  }
-  NSLog(@"%@", row);
-}
-
 // 특정 위치에 블록 놓기 
 -(void)setBlock:(int)idx x:(int)x y:(int)y
 {
@@ -100,7 +86,7 @@
   // 블록을 다 놓았으니
   if (myTurn == YES) 
   {
-   myScore = myScore + 1; // TODO: 연속해서 두는 경우 점수 증가 되어야 함  
+   myScore = myScore + 1; // #18 : 연속해서 두는 경우 점수 증가 되어야 함  
   } else {
     oppScore = oppScore + 1; // #21
   }
