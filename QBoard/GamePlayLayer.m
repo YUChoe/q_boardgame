@@ -444,8 +444,8 @@
   CCSprite *aWin = [CCSprite spriteWithFile:@"alert_background.png"];
   CGSize screenSize = [[CCDirector sharedDirector] winSize];
   
-  // 여기다 놓으면 화면 중앙이 아니라 스크롤 되기 전 중앙에 놓이게 될 텐데? 
-  aWin.position = ccp( screenSize.width /2 +diffCamera.x, screenSize.height/2 +diffCamera.y); // center 
+  // issue #19
+  aWin.position = ccpAdd(ccp(screenSize.width/2, screenSize.height/2), ccp(-diffCamera.x, -diffCamera.y));
   if (myTurn == NO) aWin.rotation = 180;
   [self addChild:aWin z:100 tag:250];
   
@@ -478,7 +478,9 @@
   popMode = 2;
   CCSprite *aWin = [CCSprite spriteWithFile:@"alert_background.png"];
   CGSize screenSize = [[CCDirector sharedDirector] winSize];
-  aWin.position = ccp( screenSize.width /2 +diffCamera.x, screenSize.height/2 +diffCamera.y); // center 
+  // issue #19
+  aWin.position = ccpAdd(ccp(screenSize.width/2, screenSize.height/2), ccp(-diffCamera.x, -diffCamera.y));
+
   if (myTurn == NO) aWin.rotation = 180;
   [self addChild:aWin z:100 tag:250];
   
