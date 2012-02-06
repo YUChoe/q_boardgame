@@ -86,10 +86,13 @@
   // 블록을 다 놓았으니
   if (myTurn == YES) 
   {
-   myScore = myScore + 1; // #18 : 연속해서 두는 경우 점수 증가 되어야 함  
+    myScore = myScore + bonusScore; // #18 : 연속해서 두는 경우 점수 증가 되어야 함  
   } else {
-    oppScore = oppScore + 1; // #21
+    oppScore = oppScore + bonusScore; // #21
   }
+  
+  bonusScore = bonusScore * 2; 
+  if (bonusScore == 0) bonusScore = 1; // #20
   
   [self drawScore]; // 점수를 그리고 
   [self realignSixBlocksInQueue]; //큐 정리 + 애니메이션 
@@ -562,6 +565,7 @@
     // TODO: 나중엔 랜덤으로 하던지 주사위를 굴리던지 해야 함 
     
     [self realignSixBlocksInQueue];
+    bonusScore = 0; // #20
     [self setBlock:0 x:20 y:20];    // 먼저 센터에 기준 블록 하나를 위의 블록큐에서 놓으면 턴이 끝나는거아닌가? 
 	}
   
@@ -745,6 +749,7 @@
 
         {
           // 예 
+          bonusScore = 1;
           // 창 닫고 
           [self removeAlert];
           // 턴 넘기고 
@@ -825,7 +830,7 @@
           
           // 오른쪽 대기블록6개를 재배치 하기 위해 날려야 됨 
           //selectedBlock = 0;
-          myTurn = !myTurn;
+          //myTurn = !myTurn; // #18 둔다고 턴을 넘기지 않음 
           [self realignSixBlocksInQueue];
           break;
         } else {
