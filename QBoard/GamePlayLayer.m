@@ -387,7 +387,7 @@
                                              alignment:CCTextAlignmentCenter
                                               fontName:@"Helvetica" 
                                               fontSize:18];
-  score_label.position = ccp(48+90, 320-14);
+  score_label.position = ccpAdd(ccp(48+90, 320-14), ccp(-diffCamera.x, -diffCamera.y)); // #22
   [self addChild:score_label z:150 tag:300];
 }
 //
