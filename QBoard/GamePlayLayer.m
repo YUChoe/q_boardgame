@@ -115,7 +115,7 @@
   // 먼저 초기화
   [self removeReadyBlocks];
 
-  // 레디블록 바닥에 까는 배경 (터치이벤트 확인 용)
+  // 레디블록 바닥에 까는 배경:blackBg (터치이벤트 확인 용)
   if ([self getChildByTag:101] == NULL)
   {
     blackBg = [CCSprite spriteWithFile:@"bg_black_48*288.png"];
@@ -134,12 +134,15 @@
     } else {
       blackBg.position = ccp(24, 144);
     }
+    // issue#5 : 위의 최초 생성 될 때는 원래 위치에 놓고 
+    // 턴을 옮길 때는 diffCamera로 보정 
+    blackBg.position = ccpAdd(blackBg.position, ccp(-diffCamera.x, -diffCamera.y));
   }
   
   if ([self getChildByTag:102] == NULL) 
   {
     passButton = [CCSprite spriteWithFile:@"pass_48*32.png"];
-    passButton.position = CGPointMake(blackBg.position.x, blackBg.position.y - blackBg.boundingBox.size.height/2 - passButton.boundingBox.size.height/2);
+    passButton.position = CGPointMake(blackBg.position.x, blackBg.position.y - blackBg.boundingBox.size.height/2 - passButton.boundingBox.size.height/2); // 위치 기준이 blackBg
     [self addChild:passButton z:26 tag:102];
   } else {
     // 이미 생성 되어 있으면 자리만 옮김
@@ -147,7 +150,7 @@
       passButton.position = CGPointMake(blackBg.position.x, blackBg.position.y - blackBg.boundingBox.size.height/2 - passButton.boundingBox.size.height/2);
       passButton.rotation = 0;
     } else {
-      passButton.position = ccp(24, 288+16);
+      passButton.position = ccpAdd(ccp(24, 288+16), ccp(-diffCamera.x, -diffCamera.y));      // #5 
       passButton.rotation = 180;
     }
   }
@@ -160,7 +163,7 @@
   {
     if (idx > 5 || idx >= [blkQueue count]) break; 
     CCSprite *b = [CCSprite spriteWithFile:@"woodenBlock_48x48.png"];
-    b.position = CGPointMake(blackBg.position.x, blackBg.position.y - 48*2 - 48/2 + idx*48);
+    b.position = CGPointMake(blackBg.position.x, blackBg.position.y - 48*2 - 48/2 + idx*48); // blackBg가 위치의 기준 
     [self addChild:b z:27];
     
     CCSprite *s = [CCSprite spriteWithFile:[self blockTypeFileName:[[[blkQueue objectAtIndex:idx] objectAtIndex:1] intValue] blockColor:[[[blkQueue objectAtIndex:idx] objectAtIndex:2] intValue]]];
@@ -187,7 +190,7 @@
 
     CCSprite *counterSprite = [[readyBlocks objectAtIndex:cnt] objectAtIndex:0];
     //b.position = ccp((counterSprite.position.x - 48), counterSprite.position.y);
-    b.position = ccp(24, counterSprite.position.y);
+    b.position = ccp(blackBg.position.x, counterSprite.position.y);
     [self addChild:b z:27];
     
     // shape
