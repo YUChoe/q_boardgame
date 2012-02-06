@@ -436,7 +436,7 @@
 }
 //
 
-// TODO: 나중에 광고도 띄워야 함  모달 alert 창 메소드 
+// 알림창 블록을 놓을 수 없습니다 
 -(void) popAlert1
 {
   onAlert = YES;
@@ -471,7 +471,7 @@
   [self addChild:ybtn z:102 tag:251];
 }
 
-// YESNO 모드 
+// 알림창 YESNO 모드 
 -(void) popAlert2
 {
   onAlert = YES;
