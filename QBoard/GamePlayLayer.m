@@ -102,7 +102,7 @@
   {
    myScore = myScore + 1; // TODO: 연속해서 두는 경우 점수 증가 되어야 함  
   } else {
-    oppScore = oppScore = 1;
+    oppScore = oppScore + 1; // #21
   }
   
   [self drawScore]; // 점수를 그리고 
