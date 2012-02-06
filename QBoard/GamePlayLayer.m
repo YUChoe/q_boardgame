@@ -11,6 +11,7 @@
 #import "GamePlayLayer.h"
 #import <stdlib.h>
 #import <time.h>
+#import "SimpleAudioEngine.h"
 
 @implementation GamePlayLayer
 
@@ -75,6 +76,8 @@
     }
     [cB putBlockAtPosition:self position:ccp(xx, yy) type:tyB color:clB];
   }
+  // #13 sound effect 
+  [[SimpleAudioEngine sharedEngine] playEffect:@"50070__m1rk0__metronom_klack.aiff"];
     
   NSMutableArray *blkUnit = [[NSMutableArray alloc] initWithObjects:cB,                  // 0:aBlock
                              [NSNumber numberWithInt:x], [NSNumber numberWithInt:y],     // 1,2:xy
@@ -551,6 +554,22 @@
     // 40*40 전체에 맞게 확장하면 안그래도 jpg파일 용량이 300k 넘어 가는데, 성능에 문제가 될 수도?
     // 차라리 카메라 이동 할 때 다시 센터로 돌아가면? 
     
+    
+    //preload background music -- #13 
+    //public domain sound effect file from soundbible.com 
+    SimpleAudioEngine *sae = [SimpleAudioEngine sharedEngine];
+    if (sae != nil) {
+      [sae preloadBackgroundMusic:@"50070__m1rk0__metronom_klack.aiff"];
+      
+      if (sae.willPlayBackgroundMusic) 
+      {
+        sae.backgroundMusicVolume = 0.5f;
+        sae.effectsVolume = 0.5f;
+      }
+    } // of preloading 
+    
+    
+    // 스테이지 시작 
     [self initAndShuffleBlocks]; // 1stage 에 사용 될 블록 정의 64개 
 
     myTurn = YES; // 내 턴 부터 시작 
