@@ -3,7 +3,7 @@
 //  QBoard
 //
 //  Created by Choe Yong-uk on 12. 1. 23..
-//  Copyright __MyCompanyName__ 2012년. All rights reserved.
+//  Copyright noizze.net 2012년. All rights reserved.
 //
 
 //
