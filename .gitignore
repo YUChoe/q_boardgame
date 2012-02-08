@@ -1,4 +1,6 @@
 
+*.swp
+
 .DS_Store
 
 QBoard.xcodeproj/project.xcworkspace/xcuserdata/pp.xcuserdatad/UserInterfaceState.xcuserstate
