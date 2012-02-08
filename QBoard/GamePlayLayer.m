@@ -83,7 +83,32 @@
   if (map_mask[x+1][y] != 2) map_mask[x+1][y] = 1;
   if (map_mask[x-1][y] != 2) map_mask[x-1][y] = 1;
 
-  // 블록을 다 놓았으니
+  
+  if (myTurn == YES)
+  {
+    CCSprite *b = [[readyBlocks objectAtIndex:idx] objectAtIndex:0];
+    b.visible = NO;
+  }
+  if (firstTurn==NO)  // 제일 첫 턴에만 애니메이션 패스 
+  {
+    id seq1 = [CCCallFuncND actionWithTarget:self selector:@selector(blockAnimation_step1:data:) data:idx];
+    id seq3 = [CCCallFunc actionWithTarget:self selector:@selector(blockAnimation_step3)];
+    
+    [self runAction:[CCSequence actions:
+                     seq1, 
+                     [CCDelayTime actionWithDuration:0.5f], 
+                     seq3, nil]];
+  } else {
+    // 첫턴 
+    [self blockAnimation_step3];
+  }
+  
+}
+//
+
+-(void) blockAnimation_step3
+{  
+  // 블록을 다 놓았으니 마지막으로 점수 정리 {{
   if (myTurn == YES) 
   {
     myScore = myScore + bonusScore; // #18 : 연속해서 두는 경우 점수 증가 되어야 함  
@@ -93,12 +118,61 @@
   
   bonusScore = bonusScore * 2; // #18 
   if (bonusScore == 0) bonusScore = 1; // #20
-  
-  [self drawScore]; // 점수를 그리고 
-  [self realignSixBlocksInQueue]; //큐 정리 + 애니메이션 
-  
+  [self drawScore]; 
+  // 점수를 그리기 끝 }} 
+  [self realignSixBlocksInQueue];
 }
-//
+
+-(void) blockAnimation_step1:(id)sender data:(int)idx
+{
+  // 놓은 블록 지우기 
+  NSMutableArray *rBUnit = [[NSMutableArray alloc] init]; 
+  id dropMove = nil;
+  
+  if (myTurn == YES)
+  {
+    rBUnit = [readyBlocks objectAtIndex:idx];
+    NSLog(@"rBUnit=%@", rBUnit);
+    dropMove = [CCMoveBy actionWithDuration:0.2f position:ccp(0, -48)];
+  } else {
+    return;
+    rBUnit = [opponentReadyBlocks objectAtIndex:idx];
+    dropMove = [CCMoveBy actionWithDuration:0.2f position:ccp(0, 48)];
+  }
+  
+  CCSprite *s = [rBUnit objectAtIndex:2];
+  s.visible=NO;
+  [self removeChild:s cleanup:YES]; // block shape 
+  [self removeChild:[rBUnit objectAtIndex:0] cleanup:YES]; // block body 
+  /*
+  if (myTurn == YES) {
+    [readyBlocks removeObjectAtIndex:idx];
+  } else {
+    [opponentReadyBlocks removeObjectAtIndex:idx];
+  }
+   */
+  // 지우기 끝 
+  
+  // 지운 위의 블록들 에니메이션 
+  NSLog(@"블록은 놓았지만 레디블록은 %d개", [readyBlocks count]);
+  // 내가 의심하는건 rbunit 배열은 줄어들지 않았다는 거지  
+  
+  for (int ii=idx+1; ii<=5; ii++) // 상대편이면 이것도 다르네 
+  {
+    id dropEase = [CCEaseIn actionWithAction:[[dropMove copy] autorelease] rate:1.0f];    
+
+    if (myTurn == YES)
+    {
+      [[[readyBlocks objectAtIndex:ii] objectAtIndex:0] runAction:[[dropEase copy] autorelease]];
+      [[[readyBlocks objectAtIndex:ii] objectAtIndex:2] runAction:[[dropEase copy] autorelease]];
+    } else {
+      [[[opponentReadyBlocks objectAtIndex:ii] objectAtIndex:0] runAction:[[dropEase copy] autorelease]];
+      [[[opponentReadyBlocks objectAtIndex:ii] objectAtIndex:2] runAction:[[dropEase copy] autorelease]];
+    }
+    NSLog(@"action! idx:%d", ii);
+  }
+}
+// 애니메이션 끝 
 
 // 화면 오른쪽에 내가 가지고 있는 (큐의 6개)블록을 보여주는 기능 
 -(void) realignSixBlocksInQueue
@@ -149,6 +223,8 @@
   
   // 남아 있는 블록이 12개 미만이면 ? 
   
+  if (myTurn==YES)
+  {
   // 블록큐에서 0-5는 나의 레디블록
   for (int idx=0; idx<[blkQueue count]; idx++) 
   {
@@ -159,7 +235,7 @@
     
     CCSprite *s = [CCSprite spriteWithFile:[self blockTypeFileName:[[[blkQueue objectAtIndex:idx] objectAtIndex:1] intValue] blockColor:[[[blkQueue objectAtIndex:idx] objectAtIndex:2] intValue]]];
     s.position = b.position;
-    [self addChild:s z:28];
+    [self addChild:s z:28 tag:(2000+idx)];
     
     if (myTurn != YES) {
       b.visible = NO;
@@ -170,7 +246,7 @@
     [readyBlocks addObject:rBUnit];
   }
 
-
+  } else {
   // 블록큐에서 마지막 6개(count-7 : count -1) 는 상대의 레디블록 
   int cnt = 0;
   for (int idx=([blkQueue count]-1); idx>([blkQueue count]-7); idx--)
@@ -199,7 +275,7 @@
     [opponentReadyBlocks addObject:rBUnit];
     cnt++;
   }
-  
+  } // of if myTurn
   // 아무것도 선택하지 않은 상태이니 
   selectedBlock = -1;
 }
@@ -530,6 +606,7 @@
     
     myScore = 0;
     oppScore = 0;
+    firstTurn = YES;
     
     // z:0 으로 배경 깔기 
     CGSize screenSize = [[CCDirector sharedDirector] winSize];
@@ -548,8 +625,7 @@
         sae.backgroundMusicVolume = 0.5f;
         sae.effectsVolume = 0.5f;
       }
-    } // of preloading 
-    
+    } // of preloading     
     
     // 스테이지 시작 
     [self initAndShuffleBlocks]; // 1stage 에 사용 될 블록 정의 64개 
@@ -557,9 +633,10 @@
     myTurn = YES; // 내 턴 부터 시작 
     // TODO: 나중엔 랜덤으로 하던지 주사위를 굴리던지 해야 함 
     
-    [self realignSixBlocksInQueue];
+    [self realignSixBlocksInQueue]; // 제일 처음 시작 
     bonusScore = 0; // #20
     [self setBlock:0 x:20 y:20];    // 먼저 센터에 기준 블록 하나를 위의 블록큐에서 놓으면 턴이 끝나는거아닌가? 
+    firstTurn = NO;
 	}
   
 	return self;
@@ -635,46 +712,18 @@
 
 -(void) removeReadyBlocks
 {
-  // 그리고 나서 순식간에 지워 버리면 티 안남 
-  NSLog(@"지우고 애니메이션 할 블록인덱스: %d", selectedBlock);
-  //만약에 다른걸 선택해서 지운 거면 ? 두가지는 구분 되어야 함 
-  /*
-  if (selectedBlock != -1 && selectedBlock != 0)
+  for (NSMutableArray *rBUnit in readyBlocks) 
   {
-    // TODO: 놓은 블록 인덱스를 알고 있으니 그놈을 지우고 
-    // 그것 보다 위에 있는 블록 5번까지에 대해 48픽셀 만큼 아래로 떨어지는 애니메이션(1초정도?)
-    // 그리고 쿵 소리 
-    NSMutableArray *rBUnit = [readyBlocks objectAtIndex:selectedBlock];
     [self removeChild:[rBUnit objectAtIndex:0] cleanup:YES];
     [self removeChild:[rBUnit objectAtIndex:2] cleanup:YES];
-
-    animateRBlocks = YES;
- 
-    for (int idx=selectedBlock; idx<5; idx++) 
-    {
-      id dropMove = [CCMoveBy actionWithDuration:1.0f position:ccp(0,-48)];
-      id move_ease_in = [CCEaseIn actionWithAction:[[dropMove copy] autorelease] rate:3.0f];
-      [[[readyBlocks objectAtIndex:idx] objectAtIndex:0] runAction:move_ease_in];
-      NSLog(@"action!") ;
-    }
-    // 시퀀스가 모두 끝나야 
-    animateBLocks = NO;
-  } else {
-    */
-    for (NSMutableArray *rBUnit in readyBlocks) 
-    {
-      [self removeChild:[rBUnit objectAtIndex:0] cleanup:YES];
-      [self removeChild:[rBUnit objectAtIndex:2] cleanup:YES];
-    }
-      
-    for (NSMutableArray *oRBunit in opponentReadyBlocks)
-    {
-      [self removeChild:[oRBunit objectAtIndex:0] cleanup:YES];
-      [self removeChild:[oRBunit objectAtIndex:2] cleanup:YES];
-    }
+  }
   
+  for (NSMutableArray *oRBunit in opponentReadyBlocks)
+  {
+    [self removeChild:[oRBunit objectAtIndex:0] cleanup:YES];
+    [self removeChild:[oRBunit objectAtIndex:2] cleanup:YES];
+  }
   
- // }
   readyBlocks = [[NSMutableArray alloc] init]; // reset
   opponentReadyBlocks = [[NSMutableArray alloc] init]; // reset
 }
@@ -750,7 +799,7 @@
       }
       return; // 아래쪽은 어떻게든 진행하지 않음 
     }
-    //
+    // 알림창 관련 이벤트 끝 
     
     // 오른쪽 6개 블록 중에서 선택이 되었는가? /////////
     if ([self collusionWithSprite:blackBg location:touchedlocation])
@@ -817,7 +866,7 @@
           // 오른쪽 대기블록6개를 재배치 하기 위해 날려야 됨 
           //selectedBlock = 0;
           //myTurn = !myTurn; // #18 둔다고 턴을 넘기지 않음 
-          [self realignSixBlocksInQueue];
+          //[self realignSixBlocksInQueue]; // setBlock의 seq에서 다시 그려줌 
           break;
         } else {
           //NSLog(@"엉뚱한 클릭 ");

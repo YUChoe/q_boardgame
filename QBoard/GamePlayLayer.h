@@ -32,7 +32,7 @@
   int myScore;
   int oppScore;
   int bonusScore;
-  
+  BOOL firstTurn; // 게임이 시작 되기 위해 첫 1블록을 두는 모드인경우에만 YES
   BOOL myTurn; // 내 턴이면 YES 상대 턴이면 NO
   CCSprite *blackBg; // 대기중 블록을 위한 오른쪽 자리 
   NSMutableArray *readyBlocks; // 블록큐 0-5 인데 굳이 필요 할까 ? 화면에 출력하고 애니메이션 하기 위함이긴 한데 
@@ -66,5 +66,8 @@
 -(void) popAlert1;
 -(void) popAlert2;
 //-(void) popAlert3;
+
+-(void) blockAnimation_step1:(id)sender data:(int)idx;
+-(void) blockAnimation_step3;
 
 @end
