@@ -16,7 +16,7 @@
 @implementation GamePlayLayer
 
 +(CCScene *) scene
-{
+{ 
 	// 'scene' is an autorelease object.
 	CCScene *scene = [CCScene node];
 	
@@ -91,7 +91,7 @@
     oppScore = oppScore + bonusScore; // #21
   }
   
-  bonusScore = bonusScore * 2; 
+  bonusScore = bonusScore * 2; // #18 
   if (bonusScore == 0) bonusScore = 1; // #20
   
   [self drawScore]; // 점수를 그리고 
@@ -101,7 +101,6 @@
 //
 
 // 화면 오른쪽에 내가 가지고 있는 (큐의 6개)블록을 보여주는 기능 
-// 애니메이션이 있어도 좋을 듯? 
 -(void) realignSixBlocksInQueue
 {
   // 먼저 초기화
@@ -483,7 +482,6 @@
                                             fontSize:18];
   
   lbl_text.position = ccp( [aWin boundingBox].size.width/2, [aWin boundingBox].size.height/2 + 20); // center 
-  //lbl_text.anchorPoint = ccp(320-280,10/2);
   lbl_text.color = ccc3(255, 255, 255); // white
   [aWin addChild:lbl_text z:101];
   
@@ -725,19 +723,16 @@
     // 알림창이 떠 있을때의 처리 //////////////////////
     if (onAlert == YES) 
     {
-      NSLog(@"popMode=%d", popMode);
       if (popMode == 1) // 여기에 둘 수 없습니다
       {
-        //CCSprite *awin = (CCSprite *)[self getChildByTag:250];// 팝업 자체 
         CCSprite *button = (CCSprite *)[self getChildByTag:251];
-        //if (CGRectContainsPoint(button.boundingBox, touchedlocation))
+
         if ([self collusionWithSprite:button location:touchedlocation])
         { 
           [self removeAlert];
         }
       } else if (popMode == 2) //
       {
-        //CCSprite *awin = [self getChildByTag:250];// 팝업 자체 
         CCSprite *yesButton = (CCSprite *)[self getChildByTag:251];
         CCSprite *noButton = (CCSprite *)[self getChildByTag:252];
 
@@ -757,9 +752,6 @@
           // 레디블록 다시 그리고 
           [self realignSixBlocksInQueue];
         }
-        
-        
-        
       }
       return; // 아래쪽은 어떻게든 진행하지 않음 
     }
@@ -768,7 +760,6 @@
     // 오른쪽 6개 블록 중에서 선택이 되었는가? /////////
     if ([self collusionWithSprite:blackBg location:touchedlocation])
     {
-      //NSLog(@"touch on blockQueue");
       if (myTurn == YES)
       {
         for (NSMutableArray *rbUnit in readyBlocks) 
