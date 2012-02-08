@@ -27,6 +27,7 @@
 		EE08C9E614D2E15F003532E9 /* blockType_star_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = EE08C9E014D2E15F003532E9 /* blockType_star_yellow.png */; };
 		EE0DABDA14E24D17005446C0 /* CreditsLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0DABD914E24D17005446C0 /* CreditsLayer.m */; };
 		EE0DABDD14E24DC2005446C0 /* optionsLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0DABDC14E24DC2005446C0 /* optionsLayer.m */; };
+		EE0DABE114E2583A005446C0 /* noizze_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = EE0DABE014E2583A005446C0 /* noizze_logo.png */; };
 		EE66675B14CD851A00582350 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE66675A14CD851A00582350 /* QuartzCore.framework */; };
 		EE66675D14CD851A00582350 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE66675C14CD851A00582350 /* OpenGLES.framework */; };
 		EE66675F14CD851A00582350 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE66675E14CD851A00582350 /* OpenAL.framework */; };
@@ -206,6 +207,7 @@
 		EE0DABD914E24D17005446C0 /* CreditsLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditsLayer.m; sourceTree = "<group>"; };
 		EE0DABDB14E24DC2005446C0 /* optionsLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = optionsLayer.h; sourceTree = "<group>"; };
 		EE0DABDC14E24DC2005446C0 /* optionsLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = optionsLayer.m; sourceTree = "<group>"; };
+		EE0DABE014E2583A005446C0 /* noizze_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noizze_logo.png; sourceTree = "<group>"; };
 		EE66675614CD851A00582350 /* QBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE66675A14CD851A00582350 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		EE66675C14CD851A00582350 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -557,6 +559,14 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		EE0DABE214E260C3005446C0 /* sound effects */ = {
+			isa = PBXGroup;
+			children = (
+				EE7B5E7614E0098A002274EB /* 50070__m1rk0__metronom_klack.aiff */,
+			);
+			name = "sound effects";
+			sourceTree = "<group>";
+		};
 		EE66674B14CD851A00582350 = {
 			isa = PBXGroup;
 			children = (
@@ -612,8 +622,8 @@
 		EE66676B14CD851A00582350 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				EED547DA14E1621C009DBCCD /* nemu buttons */,
-				EE7B5E7614E0098A002274EB /* 50070__m1rk0__metronom_klack.aiff */,
+				EE0DABE214E260C3005446C0 /* sound effects */,
+				EED547DA14E1621C009DBCCD /* menu buttons */,
 				EE84659914DEDC0A002665E8 /* Default.png */,
 				EECA774314D1719F00654358 /* BackGround */,
 				EEE15E5F14CFC66D00FB34F1 /* blockTypes */,
@@ -946,6 +956,7 @@
 		EECA774314D1719F00654358 /* BackGround */ = {
 			isa = PBXGroup;
 			children = (
+				EE0DABE014E2583A005446C0 /* noizze_logo.png */,
 				EEF4667514D7E2EE00FC4EA0 /* noButton_126*42.png */,
 				EEF4667614D7E2EE00FC4EA0 /* yesButton_126*42.png */,
 				EEF4666D14D7BC9C00FC4EA0 /* alert_background.png */,
@@ -970,7 +981,7 @@
 			name = cross;
 			sourceTree = "<group>";
 		};
-		EED547DA14E1621C009DBCCD /* nemu buttons */ = {
+		EED547DA14E1621C009DBCCD /* menu buttons */ = {
 			isa = PBXGroup;
 			children = (
 				EED547DC14E16235009DBCCD /* NewGameButton_over.png */,
@@ -980,7 +991,7 @@
 				EED547E014E16235009DBCCD /* CreditsButton.png */,
 				EED547DB14E16235009DBCCD /* CreditsButton_over.png */,
 			);
-			name = "nemu buttons";
+			name = "menu buttons";
 			sourceTree = "<group>";
 		};
 		EEE15E5F14CFC66D00FB34F1 /* blockTypes */ = {
@@ -1139,6 +1150,7 @@
 				EED547E414E16235009DBCCD /* OptionsButton.png in Resources */,
 				EED547E514E16235009DBCCD /* OptionsButton_over.png in Resources */,
 				EED547E614E16235009DBCCD /* CreditsButton.png in Resources */,
+				EE0DABE114E2583A005446C0 /* noizze_logo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
