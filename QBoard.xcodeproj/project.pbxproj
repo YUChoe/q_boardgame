@@ -25,6 +25,8 @@
 		EE08C9E414D2E15F003532E9 /* blockType_star_purple.png in Resources */ = {isa = PBXBuildFile; fileRef = EE08C9DE14D2E15F003532E9 /* blockType_star_purple.png */; };
 		EE08C9E514D2E15F003532E9 /* blockType_star_red.png in Resources */ = {isa = PBXBuildFile; fileRef = EE08C9DF14D2E15F003532E9 /* blockType_star_red.png */; };
 		EE08C9E614D2E15F003532E9 /* blockType_star_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = EE08C9E014D2E15F003532E9 /* blockType_star_yellow.png */; };
+		EE0DABDA14E24D17005446C0 /* CreditsLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0DABD914E24D17005446C0 /* CreditsLayer.m */; };
+		EE0DABDD14E24DC2005446C0 /* optionsLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0DABDC14E24DC2005446C0 /* optionsLayer.m */; };
 		EE66675B14CD851A00582350 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE66675A14CD851A00582350 /* QuartzCore.framework */; };
 		EE66675D14CD851A00582350 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE66675C14CD851A00582350 /* OpenGLES.framework */; };
 		EE66675F14CD851A00582350 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE66675E14CD851A00582350 /* OpenAL.framework */; };
@@ -200,6 +202,10 @@
 		EE08C9DE14D2E15F003532E9 /* blockType_star_purple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blockType_star_purple.png; sourceTree = "<group>"; };
 		EE08C9DF14D2E15F003532E9 /* blockType_star_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blockType_star_red.png; sourceTree = "<group>"; };
 		EE08C9E014D2E15F003532E9 /* blockType_star_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blockType_star_yellow.png; sourceTree = "<group>"; };
+		EE0DABD814E24D17005446C0 /* CreditsLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditsLayer.h; sourceTree = "<group>"; };
+		EE0DABD914E24D17005446C0 /* CreditsLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditsLayer.m; sourceTree = "<group>"; };
+		EE0DABDB14E24DC2005446C0 /* optionsLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = optionsLayer.h; sourceTree = "<group>"; };
+		EE0DABDC14E24DC2005446C0 /* optionsLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = optionsLayer.m; sourceTree = "<group>"; };
 		EE66675614CD851A00582350 /* QBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE66675A14CD851A00582350 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		EE66675C14CD851A00582350 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -433,8 +439,8 @@
 		EE6668C014CD851C00582350 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		EE6668C214CD851C00582350 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		EE6668C314CD851C00582350 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		EE6668C514CD851C00582350 /* GamePlayLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GamePlayLayer.h; sourceTree = "<group>"; };
-		EE6668C614CD851C00582350 /* GamePlayLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GamePlayLayer.m; sourceTree = "<group>"; };
+		EE6668C514CD851C00582350 /* GamePlayLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GamePlayLayer.h; path = QBoard/GamePlayLayer.h; sourceTree = "<group>"; };
+		EE6668C614CD851C00582350 /* GamePlayLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = GamePlayLayer.m; path = QBoard/GamePlayLayer.m; sourceTree = "<group>"; };
 		EE6668C814CD851C00582350 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
 		EE6668CE14CD856400582350 /* greenLinen_640x640.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = greenLinen_640x640.jpg; sourceTree = "<group>"; };
 		EE6668D014CD857400582350 /* woodenBlock_64x64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = woodenBlock_64x64.png; sourceTree = "<group>"; };
@@ -537,6 +543,20 @@
 			name = star;
 			sourceTree = "<group>";
 		};
+		EE0DABD614E24CBC005446C0 /* subLayers */ = {
+			isa = PBXGroup;
+			children = (
+				EE6668C514CD851C00582350 /* GamePlayLayer.h */,
+				EE6668C614CD851C00582350 /* GamePlayLayer.m */,
+				EE0DABDB14E24DC2005446C0 /* optionsLayer.h */,
+				EE0DABDC14E24DC2005446C0 /* optionsLayer.m */,
+				EE0DABD814E24D17005446C0 /* CreditsLayer.h */,
+				EE0DABD914E24D17005446C0 /* CreditsLayer.m */,
+			);
+			name = subLayers;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		EE66674B14CD851A00582350 = {
 			isa = PBXGroup;
 			children = (
@@ -572,12 +592,11 @@
 		EE66676A14CD851A00582350 /* QBoard */ = {
 			isa = PBXGroup;
 			children = (
+				EE0DABD614E24CBC005446C0 /* subLayers */,
 				EE6668BF14CD851C00582350 /* AppDelegate.h */,
 				EE6668C014CD851C00582350 /* AppDelegate.m */,
 				EE6668C214CD851C00582350 /* RootViewController.h */,
 				EE6668C314CD851C00582350 /* RootViewController.m */,
-				EE6668C514CD851C00582350 /* GamePlayLayer.h */,
-				EE6668C614CD851C00582350 /* GamePlayLayer.m */,
 				EED547D614E148F4009DBCCD /* menuLayer.h */,
 				EED547D714E148F4009DBCCD /* menuLayer.m */,
 				EEDFC31214CF8FC700F9B59D /* aBlock.h */,
@@ -1231,6 +1250,8 @@
 				EE6668C714CD851C00582350 /* GamePlayLayer.m in Sources */,
 				EEDFC31414CF8FC700F9B59D /* aBlock.m in Sources */,
 				EED547D814E148F4009DBCCD /* menuLayer.m in Sources */,
+				EE0DABDA14E24D17005446C0 /* CreditsLayer.m in Sources */,
+				EE0DABDD14E24DC2005446C0 /* optionsLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

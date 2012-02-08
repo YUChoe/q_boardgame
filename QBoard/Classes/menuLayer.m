@@ -7,8 +7,10 @@
 //
 
 #import "menuLayer.h"
-#import "GamePlayLayer.h"
 
+#import "GamePlayLayer.h"
+#import "optionsLayer.h"
+#import "CreditsLayer.h"
 
 @implementation menuLayer
 
@@ -111,10 +113,10 @@
       [[CCDirector sharedDirector] replaceScene:[CCTransitionFlipX transitionWithDuration:0.5f scene:[GamePlayLayer scene]]];
     } else if (CGRectContainsPoint([[self getChildByTag:203] boundingBox], touchedlocation))
     {
-    
+      [[CCDirector sharedDirector] replaceScene:[CCTransitionFlipX transitionWithDuration:0.5f scene:[OptionsLayer scene]]];
     } else if (CGRectContainsPoint([[self getChildByTag:204] boundingBox], touchedlocation))
     {
-    
+      [[CCDirector sharedDirector] replaceScene:[CCTransitionFlipX transitionWithDuration:0.5f scene:[CreditsLayer scene]]];
     }
 
   }
