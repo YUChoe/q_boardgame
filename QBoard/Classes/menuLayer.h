@@ -10,9 +10,17 @@
 #import "cocos2d.h"
 
 @interface menuLayer : CCLayer {
-    
+  UIButton *newGameButton;
+  //UIButton *continueButton;
+  UIButton *optionsButton;
+  UIButton *creditsButton;
+  
+  
 }
 
 +(CCScene *) scene;
+-(void) newGameTouched:(id)sender;
+-(void) optionsTouched:(id)sender;
+-(void) creditsTouched:(id)sender;
 
 @end
