@@ -39,7 +39,7 @@
 
     id nextStep = [CCCallFuncN actionWithTarget:self selector:@selector(displayUI:)]; //  
     
-    [self runAction: [CCSequence actions:[CCMoveBy actionWithDuration:0.5f position:ccp(0,0)], nextStep, nil]];
+    [self runAction: [CCSequence actions:[CCDelayTime actionWithDuration:0.5], nextStep, nil]];
   }
   
   return self;
