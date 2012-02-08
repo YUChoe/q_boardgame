@@ -385,7 +385,7 @@
                                             dimensions:CGSizeMake(200, 20) // width, height 
                                              alignment:CCTextAlignmentCenter
                                               fontName:@"Helvetica" 
-                                              fontSize:18];
+                                              fontSize:16];
   score_label.position = ccpAdd(ccp(48+90, 320-14), ccp(-diffCamera.x, -diffCamera.y)); // #22
   [self addChild:score_label z:150 tag:300];
 }
@@ -501,7 +501,6 @@
   [self addChild:nbtn z:102 tag:252];
 }
 
-
 // 이건 공통으로 사용 할 수 있는 걸까 
 -(void)removeAlert
 {
@@ -536,12 +535,8 @@
     CGSize screenSize = [[CCDirector sharedDirector] winSize];
     CCSprite *linenBG = [CCSprite spriteWithFile:@"greenLinen_640x640.jpg"];
     linenBG.position = ccp( screenSize.width /2 , screenSize.height/2 ); // center 
-    //[linenBG setScale:3.0f];
     [self addChild:linenBG z:0 tag:100];
-    // 40*40 전체에 맞게 확장하면 안그래도 jpg파일 용량이 300k 넘어 가는데, 성능에 문제가 될 수도?
-    // 차라리 카메라 이동 할 때 다시 센터로 돌아가면? 
-    
-    
+
     //preload background music -- #13 
     //public domain sound effect file from soundbible.com 
     SimpleAudioEngine *sae = [SimpleAudioEngine sharedEngine];
