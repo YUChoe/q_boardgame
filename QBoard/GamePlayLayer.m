@@ -63,7 +63,7 @@
     }
     [cB putBlockAtPosition:self position:ccp(xx, yy) type:tyB color:clB];
   }
-    
+   
   NSMutableArray *blkUnit = [[NSMutableArray alloc] initWithObjects:cB,                  // 0:aBlock
                              [NSNumber numberWithInt:x], [NSNumber numberWithInt:y],     // 1,2:xy
                              [NSNumber numberWithInt:tyB], [NSNumber numberWithInt:clB], // 3,4:blocktype, blockcolor
@@ -71,7 +71,7 @@
   [blocks addObject:blkUnit];
   [blkQueue removeObjectAtIndex:idx];
   //NSLog(@"블록을 놓아서 큐 인덱스가 %d", [blkQueue count]);
-  
+ 
   map[x][y] = (int)[blocks count];//  - 1; // 0으로 시작 
   map_mask[x][y] = 2; 
 
@@ -82,12 +82,12 @@
   if (map_mask[x+1][y] != 2) map_mask[x+1][y] = 1;
   if (map_mask[x-1][y] != 2) map_mask[x-1][y] = 1;
 
-  
   if (myTurn == YES)
   {
     CCSprite *b = [[readyBlocks objectAtIndex:idx] objectAtIndex:0];
     b.visible = NO;
   }
+
   if (firstTurn==NO)  // 제일 첫 턴에만 애니메이션 패스 
   {  
     // #13 sound effect - 마찬가지로 첫 턴이 아니면 
@@ -104,7 +104,6 @@
     // 첫턴 
     [self blockAnimation_step3];
   }
-  
 }
 //
 
@@ -124,52 +123,45 @@
   // 점수를 그리기 끝 }} 
   [self realignSixBlocksInQueue];
 }
+//
 
+// 대기 블록 애니메이션 메소드 
 -(void) blockAnimation_step1:(id)sender data:(int)idx
 {
   // 놓은 블록 지우기 
   NSMutableArray *rBUnit = [[NSMutableArray alloc] init]; 
-  id dropMove = nil;
-  
   if (myTurn == YES)
   {
     rBUnit = [readyBlocks objectAtIndex:idx];
-    dropMove = [CCMoveBy actionWithDuration:0.2f position:ccp(0, -48)];
   } else {
-    rBUnit = [opponentReadyBlocks objectAtIndex:idx];
-    dropMove = [CCMoveBy actionWithDuration:0.2f position:ccp(0, 48)];
+    rBUnit = [opponentReadyBlocks objectAtIndex:readyIndex];
   }
   
   CCSprite *s = [rBUnit objectAtIndex:2];
   s.visible=NO;
   [self removeChild:s cleanup:YES]; // block shape 
   [self removeChild:[rBUnit objectAtIndex:0] cleanup:YES]; // block body 
-  /*
-  if (myTurn == YES) {
-    [readyBlocks removeObjectAtIndex:idx];
-  } else {
-    [opponentReadyBlocks removeObjectAtIndex:idx];
-  }
-   */
-  // 지우기 끝 
+  // 지우기 끝. 그러나 [readyBlocks count] 는 줄어들지 않았음 
   
-  // 지운 위의 블록들 에니메이션 
-  //NSLog(@"블록은 놓았지만 레디블록은 %d개", [readyBlocks count]);
-  // 내가 의심하는건 rbunit 배열은 줄어들지 않았다는 거지  
-  id dropEase = [CCEaseIn actionWithAction:[[dropMove copy] autorelease] rate:1.0f];    
-
+  // 지워진 블록 위에 놓인 블록 이동 
   if (myTurn == YES)
   {
+    id dropMove = [CCMoveBy actionWithDuration:0.2f position:ccp(0, -48)];
+    id dropEase = [CCEaseIn actionWithAction:[[dropMove copy] autorelease] rate:1.0f];    
+
     for (int ii=idx+1; ii<=5; ii++) // 상대편이면 이것도 다르네 
-    {
-      
+    {      
       [[[readyBlocks objectAtIndex:ii] objectAtIndex:0] runAction:[[dropEase copy] autorelease]];
       [[[readyBlocks objectAtIndex:ii] objectAtIndex:2] runAction:[[dropEase copy] autorelease]];
-      //NSLog(@"action! idx:%d", ii);
     }
   } else {
     // 상대방 턴 #23 
+    // 맨 아래가 0 이니까 애니메이션을 다르게 만들어야 할 수도 .. 
     return;
+ 
+    id dropMove = [CCMoveBy actionWithDuration:0.2f position:ccp(0, -48)];
+    id dropEase = [CCEaseIn actionWithAction:[[dropMove copy] autorelease] rate:1.0f];    
+    
     for(int ii=idx; ii<[blkQueue count]; ii--)
     {
       [[[opponentReadyBlocks objectAtIndex:ii] objectAtIndex:0] runAction:[[dropEase copy] autorelease]];
@@ -469,7 +461,7 @@
 }
 //
 
-// 스테이지 시작 할 때 블록의 6모양 * 6색 * 2벌 = 64개를 정의 하고 섞는 메소드 
+// 스테이지 시작 할 때 블록의 6모양 * 6색 * 2벌 = 72개를 정의 하고 섞는 메소드 
 -(void) initAndShuffleBlocks
 {
   blkQueue = [[NSMutableArray alloc] init];
@@ -500,8 +492,6 @@
     int n = (random() % nElements) + i;
     [blkQueue exchangeObjectAtIndex:i withObjectAtIndex:n];
   }
-
-  NSLog(@"initAndShuffleBlocks Done : %d", [blkQueue count]);
 }
 //
 
@@ -730,44 +720,6 @@
   if (touch)
   {
     CGPoint touchedlocation = [[CCDirector sharedDirector] convertToGL: [touch locationInView:touch.view]];
-    /*
-    // 알림창이 떠 있을때의 처리 //////////////////////
-    if (onAlert == YES) 
-    {
-      if (popMode == 1) // 여기에 둘 수 없습니다
-      {
-        CCSprite *button = (CCSprite *)[self getChildByTag:251];
-
-        if ([self collusionWithSprite:button location:touchedlocation])
-        { 
-          [self removeAlert];
-        }
-      } else if (popMode == 2) //
-      {
-        CCSprite *yesButton = (CCSprite *)[self getChildByTag:251];
-        CCSprite *noButton = (CCSprite *)[self getChildByTag:252];
-
-        if ([self collusionWithSprite:noButton location:touchedlocation])
-        { 
-          // 아니오 눌렀으니 창 닫고 다시 원위치 
-          [self removeAlert];
-        } else if ([self collusionWithSprite:yesButton location:touchedlocation])
-
-        {
-          // 예 
-          bonusScore = 1;
-          // 창 닫고 
-          [self removeAlert];
-          // 턴 넘기고 
-          myTurn = !myTurn;
-          // 레디블록 다시 그리고 
-          [self realignSixBlocksInQueue];
-        }
-      }
-      return; // 아래쪽은 어떻게든 진행하지 않음 
-    }
-    // 알림창 관련 이벤트 끝 
-    */
     
     // 오른쪽 6개 블록 중에서 선택이 되었는가? /////////
     if ([self collusionWithSprite:blackBg location:touchedlocation])
@@ -784,7 +736,8 @@
             //NSLog(@"%d touched", selectedBlock);
             [self removeHintBlocks];
             [self showHintBlocks:selectedBlock];             
-            
+
+            readyIndex = [opponentReadyBlocks indexOfObject:rbUnit];
             return;
           }
         } // of for 
@@ -801,6 +754,7 @@
             [self removeHintBlocks];
             [self showHintBlocks:selectedBlock];             
             
+            readyIndex = [opponentReadyBlocks indexOfObject:rbUnit];
             return;
           }
         } // of for         
@@ -897,7 +851,6 @@
     //
   }
 }
-
 
 // on "dealloc" you need to release all your retained objects
 - (void) dealloc

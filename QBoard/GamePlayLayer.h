@@ -23,6 +23,7 @@
   int map_mask[40][40];   // 놓여질 수 있는 위치를 표시하기 위해 사용하는 배열 
 
   int selectedBlock;      // 선택한 블록 
+  int readyIndex;         //레디블록/opp레디블록의 몇번째 인덱스인지를 저장
   
   int myScore;
   int oppScore;
