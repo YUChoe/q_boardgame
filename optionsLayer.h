@@ -10,13 +10,20 @@
 #import "cocos2d.h"
 
 @interface OptionsLayer : CCLayer {
+  UILabel *op;
+  
+  UILabel *eflbl;
+  UISwitch *effectSoundOnOff;
+  
+  //UILabel *fliplbl;
+  //UISwitch *flipOnOff;
+  
   UIButton *backButton;
 }
 
 +(CCScene *) scene;
 
-- (void) displayUI:(id)sender;
-
+- (void) displayUI;
 - (void) backTouched:(id)sender;
 
 @end

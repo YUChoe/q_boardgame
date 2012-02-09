@@ -37,7 +37,7 @@
     linenBG.position = ccp( screenSize.width /2 , screenSize.height/2 ); // center 
     [self addChild:linenBG z:0 tag:100];
 
-    id nextStep = [CCCallFuncN actionWithTarget:self selector:@selector(displayUI:)]; //  
+    id nextStep = [CCCallFunc actionWithTarget:self selector:@selector(displayUI)]; //  
     
     [self runAction: [CCSequence actions:[CCDelayTime actionWithDuration:0.5], nextStep, nil]];
   }
@@ -45,27 +45,72 @@
   return self;
 }
 
-- (void) displayUI:(id)sender 
+- (void) displayUI
 {
-  
+  // Row 1
+  // left 
+  op = [[UILabel alloc] initWithFrame:CGRectMake(50, 20, 300, 40)];
+  op.backgroundColor = [UIColor clearColor];
+  [op setTextColor:[UIColor whiteColor]];
+  [op setFont:[UIFont fontWithName:@"MarkerFelt-Wide" size:32]];
+  [op setText:@"OPTIONS"];
+  [[[CCDirector sharedDirector] openGLView] addSubview:op];
+  // mid 
+
+  // Row 2
+  // left
+  eflbl = [[UILabel alloc] initWithFrame:CGRectMake(40, 100, 300, 40)];
+  eflbl.backgroundColor = [UIColor clearColor];
+  [eflbl setTextColor:[UIColor whiteColor]];
+  [eflbl setFont:[UIFont fontWithName:@"MarkerFelt-Wide" size:24]];
+  [eflbl setText:@"SOUND EFFECTS"];
+  [[[CCDirector sharedDirector] openGLView] addSubview:eflbl];
+  // mid 
+  effectSoundOnOff = [[UISwitch alloc] initWithFrame:CGRectMake(220, 105, 100, 30)];
+  [effectSoundOnOff setOn:YES];
+  [effectSoundOnOff setTag:200];
+  [effectSoundOnOff addTarget:self action:@selector(OnOffToggle:) forControlEvents:UIControlEventValueChanged];
+  [[[CCDirector sharedDirector] openGLView] addSubview:effectSoundOnOff];
+  /*
+  // Row 3
+  // left
+  fliplbl = [[UILabel alloc] initWithFrame:CGRectMake(140, 150, 300, 40)];
+  fliplbl.backgroundColor = [UIColor clearColor];
+  [fliplbl setTextColor:[UIColor whiteColor]];
+  [fliplbl setFont:[UIFont fontWithName:@"MarkerFelt-Wide" size:24]];
+  [fliplbl setText:@"FLIP"];
+  [[[CCDirector sharedDirector] openGLView] addSubview:fliplbl];
+  // mid
+  flipOnOff = [[UISwitch alloc] initWithFrame:CGRectMake(220, 155, 100, 30)];
+  [flipOnOff setOn:YES];
+  [flipOnOff setTag:210];
+  [flipOnOff addTarget:self action:@selector(OnOffToggle:) forControlEvents:UIControlEventValueChanged];
+  [[[CCDirector sharedDirector] openGLView] addSubview:flipOnOff];
+   */
+  // Row 4
   backButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-  //[[UIButton alloc] initWithFrame:CGRectMake(280, 20, 60, 40)];
-  [backButton setFrame:CGRectMake(300, 20, 120, 40)];
+  [backButton setFrame:CGRectMake(180, 240, 120, 40)];
   [backButton setAlpha:0.75f];
   [backButton setTitle:@"BACK" forState:UIControlStateNormal];
   [backButton.titleLabel setTextAlignment:UITextAlignmentCenter];
-  
   [backButton addTarget:self action:@selector(backTouched:) forControlEvents:UIControlEventTouchUpInside];
   [[[CCDirector sharedDirector] openGLView] addSubview: backButton];
+
 }
 
-- (void) saveTouched:(id)sender
+- (void) OnOffToggle:(id)sender
 {
-  
+  NSLog(@"tag: %@", sender);
 }
 
 - (void) backTouched:(id)sender
 {
+  [op removeFromSuperview];
+  [eflbl removeFromSuperview];
+  [effectSoundOnOff removeFromSuperview];
+  //[fliplbl removeFromSuperview];
+  //[flipOnOff removeFromSuperview];
+  
   [backButton removeFromSuperview];
   
   [[CCDirector sharedDirector] replaceScene:[CCTransitionFlipX transitionWithDuration:0.5f scene:[menuLayer scene]]];
