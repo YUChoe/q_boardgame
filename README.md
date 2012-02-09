@@ -19,7 +19,7 @@ Authors
 
 + blog : http://blog.noizze.net
 + facebook group : http://www.facebook.com/groups/131873050221514/
-+ twitter : http://twitter.com/ls_pp
++ twitter : https://twitter.com/#!/ls_pp
 + github : http://github.com/YUChoe
 
 License
