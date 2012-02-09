@@ -12,6 +12,7 @@
 #import <stdlib.h>
 #import <time.h>
 #import "SimpleAudioEngine.h"
+#import "optionsLayer.h" // config file 
 
 @implementation GamePlayLayer
 
@@ -62,8 +63,6 @@
     }
     [cB putBlockAtPosition:self position:ccp(xx, yy) type:tyB color:clB];
   }
-  // #13 sound effect 
-  [[SimpleAudioEngine sharedEngine] playEffect:@"50070__m1rk0__metronom_klack.aiff"];
     
   NSMutableArray *blkUnit = [[NSMutableArray alloc] initWithObjects:cB,                  // 0:aBlock
                              [NSNumber numberWithInt:x], [NSNumber numberWithInt:y],     // 1,2:xy
@@ -90,7 +89,10 @@
     b.visible = NO;
   }
   if (firstTurn==NO)  // 제일 첫 턴에만 애니메이션 패스 
-  {
+  {  
+    // #13 sound effect - 마찬가지로 첫 턴이 아니면 
+    [[SimpleAudioEngine sharedEngine] playEffect:@"50070__m1rk0__metronom_klack.aiff"];
+
     id seq1 = [CCCallFuncND actionWithTarget:self selector:@selector(blockAnimation_step1:data:) data:idx];
     id seq3 = [CCCallFunc actionWithTarget:self selector:@selector(blockAnimation_step3)];
     
@@ -132,10 +134,8 @@
   if (myTurn == YES)
   {
     rBUnit = [readyBlocks objectAtIndex:idx];
-    NSLog(@"rBUnit=%@", rBUnit);
     dropMove = [CCMoveBy actionWithDuration:0.2f position:ccp(0, -48)];
   } else {
-    return;
     rBUnit = [opponentReadyBlocks objectAtIndex:idx];
     dropMove = [CCMoveBy actionWithDuration:0.2f position:ccp(0, 48)];
   }
@@ -154,22 +154,27 @@
   // 지우기 끝 
   
   // 지운 위의 블록들 에니메이션 
-  NSLog(@"블록은 놓았지만 레디블록은 %d개", [readyBlocks count]);
+  //NSLog(@"블록은 놓았지만 레디블록은 %d개", [readyBlocks count]);
   // 내가 의심하는건 rbunit 배열은 줄어들지 않았다는 거지  
-  
-  for (int ii=idx+1; ii<=5; ii++) // 상대편이면 이것도 다르네 
-  {
-    id dropEase = [CCEaseIn actionWithAction:[[dropMove copy] autorelease] rate:1.0f];    
+  id dropEase = [CCEaseIn actionWithAction:[[dropMove copy] autorelease] rate:1.0f];    
 
-    if (myTurn == YES)
+  if (myTurn == YES)
+  {
+    for (int ii=idx+1; ii<=5; ii++) // 상대편이면 이것도 다르네 
     {
+      
       [[[readyBlocks objectAtIndex:ii] objectAtIndex:0] runAction:[[dropEase copy] autorelease]];
       [[[readyBlocks objectAtIndex:ii] objectAtIndex:2] runAction:[[dropEase copy] autorelease]];
-    } else {
+      //NSLog(@"action! idx:%d", ii);
+    }
+  } else {
+    // 상대방 턴 #23 
+    return;
+    for(int ii=idx; ii<[blkQueue count]; ii--)
+    {
       [[[opponentReadyBlocks objectAtIndex:ii] objectAtIndex:0] runAction:[[dropEase copy] autorelease]];
       [[[opponentReadyBlocks objectAtIndex:ii] objectAtIndex:2] runAction:[[dropEase copy] autorelease]];
     }
-    NSLog(@"action! idx:%d", ii);
   }
 }
 // 애니메이션 끝 
@@ -223,8 +228,6 @@
   
   // 남아 있는 블록이 12개 미만이면 ? 
   
-  if (myTurn==YES)
-  {
   // 블록큐에서 0-5는 나의 레디블록
   for (int idx=0; idx<[blkQueue count]; idx++) 
   {
@@ -246,7 +249,6 @@
     [readyBlocks addObject:rBUnit];
   }
 
-  } else {
   // 블록큐에서 마지막 6개(count-7 : count -1) 는 상대의 레디블록 
   int cnt = 0;
   for (int idx=([blkQueue count]-1); idx>([blkQueue count]-7); idx--)
@@ -275,7 +277,7 @@
     [opponentReadyBlocks addObject:rBUnit];
     cnt++;
   }
-  } // of if myTurn
+
   // 아무것도 선택하지 않은 상태이니 
   selectedBlock = -1;
 }
@@ -503,90 +505,57 @@
 }
 //
 
-// 알림창 블록을 놓을 수 없습니다 
+// 알림창 : 블록을 놓을 수 없습니다 // #27
 -(void) popAlert1
 {
-  onAlert = YES;
-  popMode = 1;
-  CCSprite *aWin = [CCSprite spriteWithFile:@"alert_background.png"];
-  CGSize screenSize = [[CCDirector sharedDirector] winSize];
+  UIAlertView *view=[[UIAlertView alloc] initWithTitle:@"선택 한 블록은 놓을 수 없습니다."
+                                               message:@""
+                                              delegate:self cancelButtonTitle:nil
+                                     otherButtonTitles:@"확 인", Nil];
+  [view show];
   
-  // issue #19
-  aWin.position = ccpAdd(ccp(screenSize.width/2, screenSize.height/2), ccp(-diffCamera.x, -diffCamera.y));
-  if (myTurn == NO) aWin.rotation = 180;
-  [self addChild:aWin z:100 tag:250];
-  
-  CCLabelTTF *lbl_text = [CCLabelTTF labelWithString:@"선택 한 블록은 놓을 수 없습니다." 
-                                          dimensions:CGSizeMake(280, 70) // width, height 
-                                           alignment:CCTextAlignmentCenter
-                                            fontName:@"Helvetica" 
-                                            fontSize:18];
-  
-  lbl_text.position = ccp( [aWin boundingBox].size.width/2, [aWin boundingBox].size.height/2 + 20); // center 
-  lbl_text.color = ccc3(255, 255, 255); // white
-  [aWin addChild:lbl_text z:101];
-  
-  CCSprite *ybtn = [CCSprite spriteWithFile:@"yesButton_126*42.png"];
   if (myTurn == NO)
   {
-    ybtn.rotation = 180;
-    ybtn.position = ccp( aWin.position.x, aWin.position.y + 50 ); 
-  } else {
-    ybtn.position = ccp( aWin.position.x, aWin.position.y - 50 ); 
+    CGAffineTransform theTransform;
+    theTransform = CGAffineTransformRotate(CGAffineTransformIdentity, M_PI*1.5);
+    view.superview.transform = theTransform;
   }
-
-  [self addChild:ybtn z:102 tag:251];
+  [view release];
 }
 
-// 알림창 YESNO 모드 
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+  //NSLog(@"buttonIndex:%d", buttonIndex);
+//  [alertView release];
+  if (buttonIndex == 1)    // 예 
+  {
+    bonusScore = 1;
+    // 창 닫고 
+    //[self removeAlert];
+    // 턴 넘기고 
+    myTurn = !myTurn;
+    // 레디블록 다시 그리고 
+    [self realignSixBlocksInQueue];
+  }
+}
+
+// 알림창 YESNO 모드 //#27
 -(void) popAlert2
 {
-  onAlert = YES;
-  popMode = 2;
-  CCSprite *aWin = [CCSprite spriteWithFile:@"alert_background.png"];
-  CGSize screenSize = [[CCDirector sharedDirector] winSize];
-  // issue #19
-  aWin.position = ccpAdd(ccp(screenSize.width/2, screenSize.height/2), ccp(-diffCamera.x, -diffCamera.y));
-
-  if (myTurn == NO) aWin.rotation = 180;
-  [self addChild:aWin z:100 tag:250];
+  UIAlertView *view=[[UIAlertView alloc] initWithTitle:@"차례를 넘기겠습니까?"
+                                               message:@""
+                                              delegate:self cancelButtonTitle:@"아니요"
+                                     otherButtonTitles:@"예", Nil];
+  [view show];
   
-  CCLabelTTF *lbl_text = [CCLabelTTF labelWithString:@"차례를 넘기겠습니까?" 
-                                          dimensions:CGSizeMake(280, 70) // width, height 
-                                           alignment:CCTextAlignmentCenter
-                                            fontName:@"Helvetica" 
-                                            fontSize:18];
-  
-  lbl_text.position = ccp( [aWin boundingBox].size.width/2, [aWin boundingBox].size.height/2 + 20); // center 
-  lbl_text.color = ccc3(255, 255, 255); // white
-  [aWin addChild:lbl_text z:101];
-  
-  CCSprite *ybtn = [CCSprite spriteWithFile:@"yesButton_126*42.png"];
-  CCSprite *nbtn = [CCSprite spriteWithFile:@"noButton_126*42.png"];
-  if (myTurn == NO) {
-    ybtn.rotation = 180;
-    nbtn.rotation = 180;
-    ybtn.position = ccp( aWin.position.x + 5 + 126/2 , aWin.position.y + 50);
-    nbtn.position = ccp( aWin.position.x - 5 - 126/2 , aWin.position.y + 50);
-  } else {
-    ybtn.position = ccp( aWin.position.x - 5 - 126/2 , aWin.position.y - 50);
-    nbtn.position = ccp( aWin.position.x + 5 + 126/2 , aWin.position.y - 50);
+  if (myTurn == NO)
+  {
+    CGAffineTransform theTransform;
+    theTransform = CGAffineTransformRotate(CGAffineTransformIdentity, M_PI*1.5);
+    view.superview.transform = theTransform;
   }
+  [view release];
 
-  [self addChild:ybtn z:102 tag:251];
-  [self addChild:nbtn z:102 tag:252];
-}
-
-// 이건 공통으로 사용 할 수 있는 걸까 
--(void)removeAlert
-{
-  // alert popup and script 
-  [self removeChildByTag:250 cleanup:YES];
-  // yes button
-  if ([self getChildByTag:251] != NULL) [self removeChildByTag:251 cleanup:YES];
-  // no button
-  if ([self getChildByTag:252] != NULL) [self removeChildByTag:252 cleanup:YES];
-  onAlert = NO;
 }
 
 // cocos2d scene 초기화 
@@ -595,8 +564,6 @@
 	if( (self=[super init])) 
   {
     self.isTouchEnabled = YES;
-    onAlert = NO;
-    animateRBlocks = NO;
 
     blocks = [[NSMutableArray alloc] init];
     readyBlocks = [[NSMutableArray alloc] init];
@@ -763,7 +730,7 @@
   if (touch)
   {
     CGPoint touchedlocation = [[CCDirector sharedDirector] convertToGL: [touch locationInView:touch.view]];
-
+    /*
     // 알림창이 떠 있을때의 처리 //////////////////////
     if (onAlert == YES) 
     {
@@ -800,6 +767,7 @@
       return; // 아래쪽은 어떻게든 진행하지 않음 
     }
     // 알림창 관련 이벤트 끝 
+    */
     
     // 오른쪽 6개 블록 중에서 선택이 되었는가? /////////
     if ([self collusionWithSprite:blackBg location:touchedlocation])
@@ -881,8 +849,6 @@
 // 두손가락으로 스크롤이 더 나을 듯? 
 -(void) ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event 
 {
-  if (onAlert == YES) return;
-  
   UITouch *myTouch = [touches anyObject];
   CGPoint location = [myTouch locationInView:[myTouch view]];
   location = [[CCDirector sharedDirector] convertToGL:location];
