@@ -2,7 +2,7 @@ QBoard
 ===========
 
 + <img src="https://github.com/YUChoe/q_boardgame/blob/master/docs/shot.jpg?raw=true" width="320" height="164" />
-+ http://youtu.be/zDTjL-cXtWc
++ demo : http://youtu.be/dRIgpC-CB0M
 + simple board game sample code for iOS5 with cocos2d framework.
 
 Bug tracker
