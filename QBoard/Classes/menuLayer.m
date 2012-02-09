@@ -38,41 +38,50 @@
     CCSprite *bg = [CCSprite spriteWithFile:@"greenLinen_640x640.jpg"];
     bg.position = ccp(240, 160);
     [self addChild:bg z:0 tag:100];
-    
-    // 왼쪽에 블록 아이콘 배치  
-    // 오른쪽에 메뉴
-    // 1. 뉴게임
 
-    newGameButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [newGameButton setFrame:CGRectMake(300, 120, 120, 40)]; // ccp좌표계가 아님 
-    [newGameButton setAlpha:0.75f];
-    [newGameButton setTitle:@"New game" forState:UIControlStateNormal];
-    [newGameButton.titleLabel setTextAlignment:UITextAlignmentCenter];
-    [newGameButton addTarget:self action:@selector(newGameTouched:) forControlEvents:UIControlEventTouchUpInside];
-    [[[CCDirector sharedDirector] openGLView] addSubview: newGameButton];
-  
-    // 2. 컨티뉴 ??
-    // 3. 옵션
-    optionsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [optionsButton setFrame:CGRectMake(300, 170, 120, 40)]; // ccp좌표계가 아님 
-    [optionsButton setAlpha:0.75f];
-    [optionsButton setTitle:@"Options" forState:UIControlStateNormal];
-    [optionsButton.titleLabel setTextAlignment:UITextAlignmentCenter];
-    [optionsButton addTarget:self action:@selector(optionsTouched:) forControlEvents:UIControlEventTouchUpInside];
-    [[[CCDirector sharedDirector] openGLView] addSubview: optionsButton];
+    id nextStep = [CCCallFunc actionWithTarget:self selector:@selector(displayUI)]; //  
     
-    // 4. 크리딧
-    creditsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [creditsButton setFrame:CGRectMake(300, 220, 120, 40)]; // ccp좌표계가 아님 
-    [creditsButton setAlpha:0.75f];
-    [creditsButton setTitle:@"Credits" forState:UIControlStateNormal];
-    [creditsButton.titleLabel setTextAlignment:UITextAlignmentCenter];
-    [creditsButton addTarget:self action:@selector(creditsTouched:) forControlEvents:UIControlEventTouchUpInside];
-    [[[CCDirector sharedDirector] openGLView] addSubview: creditsButton];
-    
+    [self runAction: [CCSequence actions:[CCDelayTime actionWithDuration:0.5], nextStep, nil]];
   }
 	return self;
 }    
+
+-(void)displayUI
+{
+  
+  // 왼쪽에 블록 아이콘 배치  
+  // 오른쪽에 메뉴
+  // 1. 뉴게임
+  
+  newGameButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+  [newGameButton setFrame:CGRectMake(300, 120, 120, 40)]; // ccp좌표계가 아님 
+  [newGameButton setAlpha:0.75f];
+  [newGameButton setTitle:@"New game" forState:UIControlStateNormal];
+  [newGameButton.titleLabel setTextAlignment:UITextAlignmentCenter];
+  [newGameButton addTarget:self action:@selector(newGameTouched:) forControlEvents:UIControlEventTouchUpInside];
+  [[[CCDirector sharedDirector] openGLView] addSubview: newGameButton];
+  
+  // 2. 컨티뉴 ??
+  // 3. 옵션
+  optionsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+  [optionsButton setFrame:CGRectMake(300, 170, 120, 40)]; // ccp좌표계가 아님 
+  [optionsButton setAlpha:0.75f];
+  [optionsButton setTitle:@"Options" forState:UIControlStateNormal];
+  [optionsButton.titleLabel setTextAlignment:UITextAlignmentCenter];
+  [optionsButton addTarget:self action:@selector(optionsTouched:) forControlEvents:UIControlEventTouchUpInside];
+  [[[CCDirector sharedDirector] openGLView] addSubview: optionsButton];
+  
+  // 4. 크리딧
+  creditsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+  [creditsButton setFrame:CGRectMake(300, 220, 120, 40)]; // ccp좌표계가 아님 
+  [creditsButton setAlpha:0.75f];
+  [creditsButton setTitle:@"Credits" forState:UIControlStateNormal];
+  [creditsButton.titleLabel setTextAlignment:UITextAlignmentCenter];
+  [creditsButton addTarget:self action:@selector(creditsTouched:) forControlEvents:UIControlEventTouchUpInside];
+  [[[CCDirector sharedDirector] openGLView] addSubview: creditsButton];
+  
+  
+}
 
 -(void) newGameTouched:(id)sender
 { 

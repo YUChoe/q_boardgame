@@ -19,6 +19,9 @@
 }
 
 +(CCScene *) scene;
+
+-(void)displayUI;
+
 -(void) newGameTouched:(id)sender;
 -(void) optionsTouched:(id)sender;
 -(void) creditsTouched:(id)sender;
