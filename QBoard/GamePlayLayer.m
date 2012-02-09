@@ -156,13 +156,10 @@
     }
   } else {
     // 상대방 턴 #23 
-    // 맨 아래가 0 이니까 애니메이션을 다르게 만들어야 할 수도 .. 
-    return;
- 
-    id dropMove = [CCMoveBy actionWithDuration:0.2f position:ccp(0, -48)];
+    id dropMove = [CCMoveBy actionWithDuration:0.2f position:ccp(0, 48)];
     id dropEase = [CCEaseIn actionWithAction:[[dropMove copy] autorelease] rate:1.0f];    
     
-    for(int ii=idx; ii<[blkQueue count]; ii--)
+    for(int ii=readyIndex+1; ii<=5; ii++) 
     {
       [[[opponentReadyBlocks objectAtIndex:ii] objectAtIndex:0] runAction:[[dropEase copy] autorelease]];
       [[[opponentReadyBlocks objectAtIndex:ii] objectAtIndex:2] runAction:[[dropEase copy] autorelease]];
@@ -249,9 +246,10 @@
     //
     CCSprite *b = [CCSprite spriteWithFile:@"woodenBlock_48x48.png"];
 
-    CCSprite *counterSprite = [[readyBlocks objectAtIndex:cnt] objectAtIndex:0];
-    //b.position = ccp((counterSprite.position.x - 48), counterSprite.position.y);
-    b.position = ccp(blackBg.position.x, counterSprite.position.y);
+    // #23 기존 로직. 방향이 반대로 됨 - 카운터 블록을 역산 하도록 수정
+    CCSprite *counterSprite = [[readyBlocks objectAtIndex:(5-cnt)] objectAtIndex:0];
+    b.position = ccp(blackBg.position.x, counterSprite.position.y); 
+                     
     [self addChild:b z:27];
     
     // shape
