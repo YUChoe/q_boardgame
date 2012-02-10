@@ -566,13 +566,12 @@
     myScore = 0;
     oppScore = 0;
     firstTurn = YES;
-    
+
     // z:0 으로 배경 깔기 
     CGSize screenSize = [[CCDirector sharedDirector] winSize];
     CCSprite *linenBG = [CCSprite spriteWithFile:@"greenLinen_640x640.jpg"];
     linenBG.position = ccp( screenSize.width /2 , screenSize.height/2 ); // center 
     [self addChild:linenBG z:0 tag:100];
-
     
     // 설정파일 읽어오기 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -589,38 +588,45 @@
       flip_config = YES;        // default 값 
     }    
     //
-    
-    if (effectSound_config == YES)
-    {
-      //preload background music -- #13 
-      //public domain sound effect file from soundbible.com 
-      SimpleAudioEngine *sae = [SimpleAudioEngine sharedEngine];
-      if (sae != nil) {
-        [sae preloadBackgroundMusic:@"50070__m1rk0__metronom_klack.aiff"];
-        
-        if (sae.willPlayBackgroundMusic) 
-        {
-          sae.backgroundMusicVolume = 0.5f;
-          sae.effectsVolume = 0.5f;
-        }
-      } // of preloading     
-    }
-    // 스테이지 시작 
-    [self initAndShuffleBlocks]; // 1stage 에 사용 될 블록 정의 64개 
-
-    myTurn = YES; // 내 턴 부터 시작 
-    // TODO: 나중엔 랜덤으로 하던지 주사위를 굴리던지 해야 함 
-    
-    [self realignSixBlocksInQueue]; // 제일 처음 시작 
-    bonusScore = 0; // #20
-    [self setBlock:0 x:20 y:20];    // 먼저 센터에 기준 블록 하나를 위의 블록큐에서 놓으면 턴이 끝나는거아닌가? 
-    firstTurn = NO;
+    [self runAction:[CCSequence actions:
+                     [CCCallFunc actionWithTarget:self selector:@selector(preloadSoundEffectFiles)]
+                     ,[CCCallFunc actionWithTarget:self selector:@selector(initAfter)]
+                     ,nil]];
+    // 이러면 백그라운드로 들어갈라나 
 	}
   
 	return self;
 }
 //
-
+-(void) initAfter
+{
+  // 스테이지 시작 
+  [self initAndShuffleBlocks]; // 1stage 에 사용 될 블록 정의 64개 
+  myTurn = YES; // 내 턴 부터 시작 
+  // TODO: 나중엔 랜덤으로 하던지 주사위를 굴리던지 해야 함 
+  
+  [self realignSixBlocksInQueue]; // 제일 처음 시작 
+  bonusScore = 0; // #20
+  [self setBlock:0 x:20 y:20];    // 먼저 센터에 기준 블록 하나를 위의 블록큐에서 놓으면 턴이 끝나는거아닌가? 
+  firstTurn = NO;  
+}
+-(void) preloadSoundEffectFiles
+{
+  if (effectSound_config != YES) return;
+  
+ //preload background music -- #13 
+  //public domain sound effect file from soundbible.com 
+  SimpleAudioEngine *sae = [SimpleAudioEngine sharedEngine]; // #25 여기서 느려짐 
+  if (sae != nil) {
+    [sae preloadBackgroundMusic:@"50070__m1rk0__metronom_klack.aiff"];
+    
+    if (sae.willPlayBackgroundMusic) 
+    {
+      sae.backgroundMusicVolume = 0.5f;
+      sae.effectsVolume = 0.5f;
+    }
+  } // of preloading       
+}
 // 대기 블록을 터치 해서 blockQueue의 인덱스를 넘겨주면 해당하는 모양/색의 힌트 블록을 보여주는 메소드 
 -(void) showHintBlocks:(int)idx
 {
