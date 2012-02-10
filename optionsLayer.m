@@ -127,13 +127,6 @@
   [[CCDirector sharedDirector] replaceScene:[CCTransitionFlipX transitionWithDuration:0.5f scene:[menuLayer scene]]];
 }
 
-NSString *GameDataFilePath(NSString *filename)
-{
-  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-  NSString *documentDirectory = [paths objectAtIndex:0];
-  return [documentDirectory stringByAppendingPathComponent:filename];
-}
-
 // on "dealloc" you need to release all your retained objects
 - (void) dealloc
 {
