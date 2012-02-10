@@ -91,8 +91,11 @@
   if (firstTurn==NO)  // 제일 첫 턴에만 애니메이션 패스 
   {  
     // #13 sound effect - 마찬가지로 첫 턴이 아니면 
-    [[SimpleAudioEngine sharedEngine] playEffect:@"50070__m1rk0__metronom_klack.aiff"];
-
+    if (effectSound_config == YES)
+    {
+      [[SimpleAudioEngine sharedEngine] playEffect:@"50070__m1rk0__metronom_klack.aiff"];
+    }
+    
     id seq1 = [CCCallFuncND actionWithTarget:self selector:@selector(blockAnimation_step1:data:) data:idx];
     id seq3 = [CCCallFunc actionWithTarget:self selector:@selector(blockAnimation_step3)];
     
@@ -107,6 +110,7 @@
 }
 //
 
+// 블록 애니메이션 마무리. 점수 추가 
 -(void) blockAnimation_step3
 {  
   // 블록을 다 놓았으니 마지막으로 점수 정리 {{
@@ -569,19 +573,38 @@
     linenBG.position = ccp( screenSize.width /2 , screenSize.height/2 ); // center 
     [self addChild:linenBG z:0 tag:100];
 
-    //preload background music -- #13 
-    //public domain sound effect file from soundbible.com 
-    SimpleAudioEngine *sae = [SimpleAudioEngine sharedEngine];
-    if (sae != nil) {
-      [sae preloadBackgroundMusic:@"50070__m1rk0__metronom_klack.aiff"];
-      
-      if (sae.willPlayBackgroundMusic) 
-      {
-        sae.backgroundMusicVolume = 0.5f;
-        sae.effectsVolume = 0.5f;
-      }
-    } // of preloading     
     
+    // 설정파일 읽어오기 
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *fileName = [documentsDirectory stringByAppendingPathComponent:CONFIG_FILE_NAME];
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithContentsOfFile:fileName];
+    
+    if (dic != nil)
+    {
+      effectSound_config = ([[dic objectForKey:@"effectSound"] isEqualToString:@"YES"] ? YES : NO);
+      flip_config = ([[dic objectForKey:@"flip"] isEqualToString:@"YES"] ? YES : NO);
+    } else {
+      effectSound_config = YES; // default 값
+      flip_config = YES;        // default 값 
+    }    
+    //
+    
+    if (effectSound_config == YES)
+    {
+      //preload background music -- #13 
+      //public domain sound effect file from soundbible.com 
+      SimpleAudioEngine *sae = [SimpleAudioEngine sharedEngine];
+      if (sae != nil) {
+        [sae preloadBackgroundMusic:@"50070__m1rk0__metronom_klack.aiff"];
+        
+        if (sae.willPlayBackgroundMusic) 
+        {
+          sae.backgroundMusicVolume = 0.5f;
+          sae.effectsVolume = 0.5f;
+        }
+      } // of preloading     
+    }
     // 스테이지 시작 
     [self initAndShuffleBlocks]; // 1stage 에 사용 될 블록 정의 64개 
 

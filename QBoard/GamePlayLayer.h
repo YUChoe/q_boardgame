@@ -14,6 +14,11 @@
 // GamePlayLayer
 @interface GamePlayLayer : CCLayer
 {
+  
+  // 설정파일값 
+  BOOL effectSound_config;
+  BOOL flip_config;
+  
   NSMutableArray *blocks;     // 바닥에 깔린 블록들 
   NSMutableArray *hintBlocks; // 힌트로 사용 될 블록들 
   NSMutableArray *blkQueue;   // 6colours * 6shapes * 2set = 64개 블록이 초기화 되면 목록별로 들어감 
