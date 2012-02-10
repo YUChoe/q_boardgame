@@ -28,4 +28,6 @@
 
 @end
 
-#define CONFIG_FILE_NAME "config.xml"
+#define CONFIG_FILE_NAME @"config.xml"
+
+NSString *GameDataFilePath(NSString *filename);

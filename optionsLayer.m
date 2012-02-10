@@ -100,7 +100,18 @@
 
 - (void) OnOffToggle:(id)sender
 {
-  NSLog(@"tag: %@", sender);
+  // 한번에 2개 다 저장 
+  NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+  
+  [dic setObject:([effectSoundOnOff isOn] ? @"YES" : @"NO") forKey:@"effectSound"];
+  //[dic setObject:([flipOnOff isOn] ? @"YES" : @"NO") forKey:@"effectSound"];
+  
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+  NSString *documentsDirectory = [paths objectAtIndex:0];
+  NSString *fileName = [documentsDirectory stringByAppendingPathComponent:CONFIG_FILE_NAME];
+  //NSLog(@"filefullpath:%@",fileName);
+
+  [dic writeToFile:fileName atomically:YES];
 }
 
 - (void) backTouched:(id)sender
@@ -114,6 +125,13 @@
   [backButton removeFromSuperview];
   
   [[CCDirector sharedDirector] replaceScene:[CCTransitionFlipX transitionWithDuration:0.5f scene:[menuLayer scene]]];
+}
+
+NSString *GameDataFilePath(NSString *filename)
+{
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+  NSString *documentDirectory = [paths objectAtIndex:0];
+  return [documentDirectory stringByAppendingPathComponent:filename];
 }
 
 // on "dealloc" you need to release all your retained objects
