@@ -47,6 +47,34 @@
 
 - (void) displayUI
 {
+  // 설정파일 읽어오기 
+  BOOL effectSound_config = YES; // default 값
+  BOOL flip_config = YES;        // default 값 
+  
+  //
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+  NSString *documentsDirectory = [paths objectAtIndex:0];
+  NSString *fileName = [documentsDirectory stringByAppendingPathComponent:CONFIG_FILE_NAME];
+  NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithContentsOfFile:fileName];
+  
+  if (dic != nil)
+  {
+    effectSound_config = ([[dic objectForKey:@"effectSound"] isEqualToString:@"YES"] ? YES : NO);
+    flip_config = ([[dic objectForKey:@"flip"] isEqualToString:@"YES"] ? YES : NO);
+  } else {
+    // 파일 생성 
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+    
+    [dic setObject:@"YES" forKey:@"effectSound"];
+    //[dic setObject:@"YES" forKey:@"flip"];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *fileName = [documentsDirectory stringByAppendingPathComponent:CONFIG_FILE_NAME];
+    
+    [dic writeToFile:fileName atomically:YES];
+  }
+  
   // Row 1
   // left 
   op = [[UILabel alloc] initWithFrame:CGRectMake(50, 20, 300, 40)];
@@ -67,7 +95,7 @@
   [[[CCDirector sharedDirector] openGLView] addSubview:eflbl];
   // mid 
   effectSoundOnOff = [[UISwitch alloc] initWithFrame:CGRectMake(220, 105, 100, 30)];
-  [effectSoundOnOff setOn:YES];
+  [effectSoundOnOff setOn:effectSound_config];
   [effectSoundOnOff setTag:200];
   [effectSoundOnOff addTarget:self action:@selector(OnOffToggle:) forControlEvents:UIControlEventValueChanged];
   [[[CCDirector sharedDirector] openGLView] addSubview:effectSoundOnOff];
@@ -104,7 +132,7 @@
   NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
   
   [dic setObject:([effectSoundOnOff isOn] ? @"YES" : @"NO") forKey:@"effectSound"];
-  //[dic setObject:([flipOnOff isOn] ? @"YES" : @"NO") forKey:@"effectSound"];
+  //[dic setObject:([flipOnOff isOn] ? @"YES" : @"NO") forKey:@"flip"];
   
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
   NSString *documentsDirectory = [paths objectAtIndex:0];
