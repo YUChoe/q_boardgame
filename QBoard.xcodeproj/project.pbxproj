@@ -590,15 +590,12 @@
 		EE66676A14CD851A00582350 /* QBoard */ = {
 			isa = PBXGroup;
 			children = (
+				EEEA838D14E41A7800620F8F /* custom classes */,
 				EE0DABD614E24CBC005446C0 /* subLayers */,
 				EE6668BF14CD851C00582350 /* AppDelegate.h */,
 				EE6668C014CD851C00582350 /* AppDelegate.m */,
 				EE6668C214CD851C00582350 /* RootViewController.h */,
 				EE6668C314CD851C00582350 /* RootViewController.m */,
-				EED547D614E148F4009DBCCD /* menuLayer.h */,
-				EED547D714E148F4009DBCCD /* menuLayer.m */,
-				EEDFC31214CF8FC700F9B59D /* aBlock.h */,
-				EEDFC31314CF8FC700F9B59D /* aBlock.m */,
 				EE6668C814CD851C00582350 /* GameConfig.h */,
 				EE66676B14CD851A00582350 /* Resources */,
 				EE66677F14CD851A00582350 /* libs */,
@@ -1009,6 +1006,17 @@
 				EEE15E6E14CFEB3D00FB34F1 /* blockType_clover_red.png */,
 			);
 			name = clover;
+			sourceTree = "<group>";
+		};
+		EEEA838D14E41A7800620F8F /* custom classes */ = {
+			isa = PBXGroup;
+			children = (
+				EED547D614E148F4009DBCCD /* menuLayer.h */,
+				EED547D714E148F4009DBCCD /* menuLayer.m */,
+				EEDFC31214CF8FC700F9B59D /* aBlock.h */,
+				EEDFC31314CF8FC700F9B59D /* aBlock.m */,
+			);
+			name = "custom classes";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
