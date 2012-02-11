@@ -452,13 +452,23 @@
 {
   if ([self getChildByTag:300] != NULL) [self removeChildByTag:300 cleanup:YES];
   
-  NSString *score_text = [NSString stringWithFormat:@"Score %03d : %03d", myScore, oppScore];
+  NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+  [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+  
+  // #32 
+  //NSString *score_text = [NSString stringWithFormat:@"Score %03d : %03d", myScore, oppScore];
+  NSString *score_text = [NSString stringWithFormat:@"Score %@ : %@", 
+                          [formatter stringFromNumber:[NSNumber numberWithInt:myScore]], 
+                          [formatter stringFromNumber:[NSNumber numberWithInt:oppScore]]
+                          ];
+  
   CCLabelTTF *score_label = [CCLabelTTF labelWithString:score_text
-                                            dimensions:CGSizeMake(200, 20) // width, height 
-                                             alignment:CCTextAlignmentCenter
-                                              fontName:@"Helvetica" 
-                                              fontSize:16];
-  score_label.position = ccpAdd(ccp(48+90, 320-14), ccp(-diffCamera.x, -diffCamera.y)); // #22
+                                             dimensions:CGSizeMake(200, 20) // width, height 
+                                              alignment:CCTextAlignmentCenter
+                                               fontName:@"Helvetica" 
+                                               fontSize:14];
+                                              //fontSize:16];
+  score_label.position = ccpAdd(ccp(110, 305), ccp(-diffCamera.x, -diffCamera.y)); // #22
   [self addChild:score_label z:150 tag:300];
 }
 //
