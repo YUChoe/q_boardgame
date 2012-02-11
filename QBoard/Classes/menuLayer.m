@@ -56,7 +56,8 @@
   newGameButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
   [newGameButton setFrame:CGRectMake(300, 120, 120, 40)]; // ccp좌표계가 아님 
   [newGameButton setAlpha:0.75f];
-  [newGameButton setTitle:@"New game" forState:UIControlStateNormal];
+  //[newGameButton setTitle:@"New game" forState:UIControlStateNormal];
+  [newGameButton setTitle:@"Start Game" forState:UIControlStateNormal]; // #31
   [newGameButton.titleLabel setTextAlignment:UITextAlignmentCenter];
   [newGameButton addTarget:self action:@selector(newGameTouched:) forControlEvents:UIControlEventTouchUpInside];
   [[[CCDirector sharedDirector] openGLView] addSubview: newGameButton];
