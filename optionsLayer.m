@@ -66,7 +66,7 @@
     NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
     
     [dic setObject:@"YES" forKey:@"effectSound"];
-    //[dic setObject:@"YES" forKey:@"flip"];
+    [dic setObject:@"YES" forKey:@"flip"];
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -99,7 +99,7 @@
   [effectSoundOnOff setTag:200];
   [effectSoundOnOff addTarget:self action:@selector(OnOffToggle:) forControlEvents:UIControlEventValueChanged];
   [[[CCDirector sharedDirector] openGLView] addSubview:effectSoundOnOff];
-  /*
+  
   // Row 3
   // left
   fliplbl = [[UILabel alloc] initWithFrame:CGRectMake(140, 150, 300, 40)];
@@ -110,11 +110,11 @@
   [[[CCDirector sharedDirector] openGLView] addSubview:fliplbl];
   // mid
   flipOnOff = [[UISwitch alloc] initWithFrame:CGRectMake(220, 155, 100, 30)];
-  [flipOnOff setOn:YES];
+  [flipOnOff setOn:flip_config];
   [flipOnOff setTag:210];
   [flipOnOff addTarget:self action:@selector(OnOffToggle:) forControlEvents:UIControlEventValueChanged];
   [[[CCDirector sharedDirector] openGLView] addSubview:flipOnOff];
-   */
+   
   // Row 4
   backButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
   [backButton setFrame:CGRectMake(180, 240, 120, 40)];
@@ -132,7 +132,7 @@
   NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
   
   [dic setObject:([effectSoundOnOff isOn] ? @"YES" : @"NO") forKey:@"effectSound"];
-  //[dic setObject:([flipOnOff isOn] ? @"YES" : @"NO") forKey:@"flip"];
+  [dic setObject:([flipOnOff isOn] ? @"YES" : @"NO") forKey:@"flip"];
   
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
   NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -147,8 +147,8 @@
   [op removeFromSuperview];
   [eflbl removeFromSuperview];
   [effectSoundOnOff removeFromSuperview];
-  //[fliplbl removeFromSuperview];
-  //[flipOnOff removeFromSuperview];
+  [fliplbl removeFromSuperview];
+  [flipOnOff removeFromSuperview];
   
   [backButton removeFromSuperview];
   

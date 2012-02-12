@@ -15,8 +15,8 @@
   UILabel *eflbl;
   UISwitch *effectSoundOnOff;
   
-  //UILabel *fliplbl;
-  //UISwitch *flipOnOff;
+  UILabel *fliplbl;
+  UISwitch *flipOnOff;
   
   UIButton *backButton;
 }
