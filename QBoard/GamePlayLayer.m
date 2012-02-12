@@ -160,13 +160,25 @@
     }
   } else {
     // 상대방 턴 #23 
-    id dropMove = [CCMoveBy actionWithDuration:0.2f position:ccp(0, 48)];
-    id dropEase = [CCEaseIn actionWithAction:[[dropMove copy] autorelease] rate:1.0f];    
-    
-    for(int ii=readyIndex+1; ii<=5; ii++) 
+    if (flip_config == YES)
     {
-      [[[opponentReadyBlocks objectAtIndex:ii] objectAtIndex:0] runAction:[[dropEase copy] autorelease]];
-      [[[opponentReadyBlocks objectAtIndex:ii] objectAtIndex:2] runAction:[[dropEase copy] autorelease]];
+      id dropMove = [CCMoveBy actionWithDuration:0.2f position:ccp(0, 48)];
+      id dropEase = [CCEaseIn actionWithAction:[[dropMove copy] autorelease] rate:1.0f];    
+      
+      for(int ii=readyIndex+1; ii<=5; ii++) 
+      {
+        [[[opponentReadyBlocks objectAtIndex:ii] objectAtIndex:0] runAction:[[dropEase copy] autorelease]];
+        [[[opponentReadyBlocks objectAtIndex:ii] objectAtIndex:2] runAction:[[dropEase copy] autorelease]];
+      }
+    } else {      
+      id dropMove = [CCMoveBy actionWithDuration:0.2f position:ccp(0, -48)];
+      id dropEase = [CCEaseIn actionWithAction:[[dropMove copy] autorelease] rate:1.0f];    
+      
+      for(int ii=readyIndex+1; ii<=5; ii++) 
+      {
+        [[[opponentReadyBlocks objectAtIndex:ii] objectAtIndex:0] runAction:[[dropEase copy] autorelease]];
+        [[[opponentReadyBlocks objectAtIndex:ii] objectAtIndex:2] runAction:[[dropEase copy] autorelease]];
+      }
     }
   }
 }
@@ -195,13 +207,21 @@
       CGSize screenSize = [[CCDirector sharedDirector] winSize];
       blackBg.position = CGPointMake(screenSize.width - 48/2, screenSize.height/2 + 16);      
     } else {
-      blackBg.position = ccp(24, 144);
+      if (flip_config == YES)
+      {
+        blackBg.position = ccp(24, 144);
+      } else {
+        // flip_config == NO
+        CGSize screenSize = [[CCDirector sharedDirector] winSize];
+        blackBg.position = ccp(24, screenSize.height/2 + 16);
+      }
     }
     // issue#5 : 위의 최초 생성 될 때는 원래 위치에 놓고 
     // 턴을 옮길 때는 diffCamera로 보정 
     blackBg.position = ccpAdd(blackBg.position, ccp(-diffCamera.x, -diffCamera.y));
   }
   
+  // pass 버튼 
   if ([self getChildByTag:102] == NULL) 
   {
     passButton = [CCSprite spriteWithFile:@"pass_48*32.png"];
@@ -213,11 +233,19 @@
       passButton.position = CGPointMake(blackBg.position.x, blackBg.position.y - blackBg.boundingBox.size.height/2 - passButton.boundingBox.size.height/2);
       passButton.rotation = 0;
     } else {
-      passButton.position = ccpAdd(ccp(24, 288+16), ccp(-diffCamera.x, -diffCamera.y));      // #5 
-      passButton.rotation = 180;
+      if (flip_config == YES)
+      {
+        passButton.position = ccpAdd(ccp(blackBg.position.x, 288+16), ccp(-diffCamera.x, -diffCamera.y));      // #5 
+        passButton.rotation = 180;
+      } else {
+        passButton.position = CGPointMake(blackBg.position.x, 
+                                          blackBg.position.y - blackBg.boundingBox.size.height/2 - passButton.boundingBox.size.height/2);
+        passButton.rotation = 0;
+        
+      }
+      
     }
   }
-    
   
   // 남아 있는 블록이 12개 미만이면 ? 
   
@@ -251,15 +279,26 @@
     CCSprite *b = [CCSprite spriteWithFile:@"woodenBlock_48x48.png"];
 
     // #23 기존 로직. 방향이 반대로 됨 - 카운터 블록을 역산 하도록 수정
+    if (flip_config == YES)
+    {
+
     CCSprite *counterSprite = [[readyBlocks objectAtIndex:(5-cnt)] objectAtIndex:0];
     b.position = ccp(blackBg.position.x, counterSprite.position.y); 
-                     
+    } else {
+      CCSprite *counterSprite = [[readyBlocks objectAtIndex:cnt] objectAtIndex:0];
+      b.position = ccp(blackBg.position.x, counterSprite.position.y);       
+    }
     [self addChild:b z:27];
     
     // shape
     CCSprite *s = [CCSprite spriteWithFile:[self blockTypeFileName:[[[blkQueue objectAtIndex:idx] objectAtIndex:1] intValue] blockColor:[[[blkQueue objectAtIndex:idx] objectAtIndex:2] intValue]]];
     s.position = b.position;
-    s.rotation = 180; // 뒤집는다 
+    if (flip_config == YES)
+    {
+      s.rotation = 180; // 뒤집는다 
+    } else {
+      // 
+    }
     [self addChild:s z:28];
     
     if (myTurn != NO) {
@@ -516,7 +555,7 @@
                                      otherButtonTitles:@"확 인", Nil];
   [view show];
   
-  if (myTurn == NO)
+  if (myTurn == NO && flip_config == YES)
   {
     CGAffineTransform theTransform;
     theTransform = CGAffineTransformRotate(CGAffineTransformIdentity, M_PI*1.5);
@@ -550,7 +589,7 @@
                                      otherButtonTitles:@"예", Nil];
   [view show];
   
-  if (myTurn == NO)
+  if (myTurn == NO && flip_config == YES)
   {
     CGAffineTransform theTransform;
     theTransform = CGAffineTransformRotate(CGAffineTransformIdentity, M_PI*1.5);
