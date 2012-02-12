@@ -1,10 +1,12 @@
 QBoard
 ===========
 
++ simple board game sample code for iOS5, using cocos2d framework.
+
 <img src="https://github.com/YUChoe/q_boardgame/raw/master/QBoard/boardgame_shot_250x250.jpg" width="250" height="250" />
 <img src="https://github.com/YUChoe/q_boardgame/blob/master/docs/shot.jpg?raw=true" width="320" height="164" />
+
 + playing demo : http://youtu.be/dRIgpC-CB0M
-+ simple board game sample code for iOS5, using cocos2d framework.
 
 Bug tracker
 -----------
