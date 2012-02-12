@@ -165,6 +165,10 @@
 		EEE15E7314D00D1100FB34F1 /* blockType_clover_green.png in Resources */ = {isa = PBXBuildFile; fileRef = EEE15E7214D00D1100FB34F1 /* blockType_clover_green.png */; };
 		EEE5E90414E7AF7C00B3A169 /* boardgame_shot_250x250.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EEE5E90314E7AF7C00B3A169 /* boardgame_shot_250x250.jpg */; };
 		EEE5E90714E7B62000B3A169 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EEE5E90614E7B62000B3A169 /* Icon.png */; };
+		EEE5E91114E7B98C00B3A169 /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEE5E90F14E7B98C00B3A169 /* libGoogleAdMobAds.a */; };
+		EEE5E91214E7B98C00B3A169 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = EEE5E91014E7B98C00B3A169 /* README.txt */; };
+		EEE5E91414E7B9C300B3A169 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEE5E91314E7B9C300B3A169 /* MessageUI.framework */; };
+		EEE5E91614E7B9D500B3A169 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEE5E91514E7B9D500B3A169 /* SystemConfiguration.framework */; };
 		EEF4666B14D7BBC000FC4EA0 /* pass_48*15.png in Resources */ = {isa = PBXBuildFile; fileRef = EEF4666A14D7BBC000FC4EA0 /* pass_48*15.png */; };
 		EEF4666E14D7BC9C00FC4EA0 /* alert_background.png in Resources */ = {isa = PBXBuildFile; fileRef = EEF4666D14D7BC9C00FC4EA0 /* alert_background.png */; };
 		EEF4667014D7D7EA00FC4EA0 /* pass_48*32.png in Resources */ = {isa = PBXBuildFile; fileRef = EEF4666F14D7D7EA00FC4EA0 /* pass_48*32.png */; };
@@ -458,6 +462,16 @@
 		EEE15E7214D00D1100FB34F1 /* blockType_clover_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blockType_clover_green.png; sourceTree = "<group>"; };
 		EEE5E90314E7AF7C00B3A169 /* boardgame_shot_250x250.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = boardgame_shot_250x250.jpg; sourceTree = "<group>"; };
 		EEE5E90614E7B62000B3A169 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../Icon.png; sourceTree = "<group>"; };
+		EEE5E90914E7B98C00B3A169 /* GADBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerView.h; sourceTree = "<group>"; };
+		EEE5E90A14E7B98C00B3A169 /* GADBannerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerViewDelegate.h; sourceTree = "<group>"; };
+		EEE5E90B14E7B98C00B3A169 /* GADInterstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitial.h; sourceTree = "<group>"; };
+		EEE5E90C14E7B98C00B3A169 /* GADInterstitialDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitialDelegate.h; sourceTree = "<group>"; };
+		EEE5E90D14E7B98C00B3A169 /* GADRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequest.h; sourceTree = "<group>"; };
+		EEE5E90E14E7B98C00B3A169 /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
+		EEE5E90F14E7B98C00B3A169 /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
+		EEE5E91014E7B98C00B3A169 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		EEE5E91314E7B9C300B3A169 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		EEE5E91514E7B9D500B3A169 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		EEF4666A14D7BBC000FC4EA0 /* pass_48*15.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pass_48*15.png"; sourceTree = "<group>"; };
 		EEF4666D14D7BC9C00FC4EA0 /* alert_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alert_background.png; sourceTree = "<group>"; };
 		EEF4666F14D7D7EA00FC4EA0 /* pass_48*32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pass_48*32.png"; sourceTree = "<group>"; };
@@ -472,6 +486,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEE5E91614E7B9D500B3A169 /* SystemConfiguration.framework in Frameworks */,
+				EEE5E91414E7B9C300B3A169 /* MessageUI.framework in Frameworks */,
 				EE66675B14CD851A00582350 /* QuartzCore.framework in Frameworks */,
 				EE66675D14CD851A00582350 /* OpenGLES.framework in Frameworks */,
 				EE66675F14CD851A00582350 /* OpenAL.framework in Frameworks */,
@@ -480,6 +496,7 @@
 				EE66676514CD851A00582350 /* UIKit.framework in Frameworks */,
 				EE66676714CD851A00582350 /* Foundation.framework in Frameworks */,
 				EE66676914CD851A00582350 /* CoreGraphics.framework in Frameworks */,
+				EEE5E91114E7B98C00B3A169 /* libGoogleAdMobAds.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -567,6 +584,8 @@
 		EE66675914CD851A00582350 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EEE5E91514E7B9D500B3A169 /* SystemConfiguration.framework */,
+				EEE5E91314E7B9C300B3A169 /* MessageUI.framework */,
 				EE66675A14CD851A00582350 /* QuartzCore.framework */,
 				EE66675C14CD851A00582350 /* OpenGLES.framework */,
 				EE66675E14CD851A00582350 /* OpenAL.framework */,
@@ -582,6 +601,7 @@
 		EE66676A14CD851A00582350 /* QBoard */ = {
 			isa = PBXGroup;
 			children = (
+				EEE5E90814E7B98C00B3A169 /* GoogleAdMob */,
 				EEEA838D14E41A7800620F8F /* custom classes */,
 				EE0DABD614E24CBC005446C0 /* subLayers */,
 				EE6668BF14CD851C00582350 /* AppDelegate.h */,
@@ -996,6 +1016,21 @@
 			name = clover;
 			sourceTree = "<group>";
 		};
+		EEE5E90814E7B98C00B3A169 /* GoogleAdMob */ = {
+			isa = PBXGroup;
+			children = (
+				EEE5E90914E7B98C00B3A169 /* GADBannerView.h */,
+				EEE5E90A14E7B98C00B3A169 /* GADBannerViewDelegate.h */,
+				EEE5E90B14E7B98C00B3A169 /* GADInterstitial.h */,
+				EEE5E90C14E7B98C00B3A169 /* GADInterstitialDelegate.h */,
+				EEE5E90D14E7B98C00B3A169 /* GADRequest.h */,
+				EEE5E90E14E7B98C00B3A169 /* GADRequestError.h */,
+				EEE5E90F14E7B98C00B3A169 /* libGoogleAdMobAds.a */,
+				EEE5E91014E7B98C00B3A169 /* README.txt */,
+			);
+			path = GoogleAdMob;
+			sourceTree = "<group>";
+		};
 		EEEA838D14E41A7800620F8F /* custom classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -1111,6 +1146,7 @@
 				EE0DABE114E2583A005446C0 /* noizze_logo.png in Resources */,
 				EEE5E90414E7AF7C00B3A169 /* boardgame_shot_250x250.jpg in Resources */,
 				EEE5E90714E7B62000B3A169 /* Icon.png in Resources */,
+				EEE5E91214E7B98C00B3A169 /* README.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1276,6 +1312,10 @@
 				GCC_PREFIX_HEADER = QBoard/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = QBoard/Resources/Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/QBoard/GoogleAdMob\"",
+				);
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -1291,6 +1331,10 @@
 				GCC_PREFIX_HEADER = QBoard/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = QBoard/Resources/Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/QBoard/GoogleAdMob\"",
+				);
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;
