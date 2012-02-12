@@ -82,6 +82,16 @@
   [[[CCDirector sharedDirector] openGLView] addSubview: creditsButton];
   
   
+  CCSprite *bgame = [CCSprite spriteWithFile:@"boardgame_shot_250x250.jpg"];
+  bgame.position = ccp(150, 150);
+  bgame.opacity = 200;
+  bgame.scale = 0;
+  
+  [self addChild:bgame z:10 tag:27];
+  [bgame runAction:[CCScaleTo actionWithDuration:2.0f scale:1]];
+  [bgame runAction:[CCRotateBy actionWithDuration:2.0f angle:360]];
+   
+   
 }
 
 -(void) newGameTouched:(id)sender
