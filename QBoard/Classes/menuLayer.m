@@ -12,6 +12,9 @@
 #import "optionsLayer.h"
 #import "CreditsLayer.h"
 
+#import "pp_Admob.h" // personal id 
+
+
 @implementation menuLayer
 
 +(CCScene *) scene
@@ -92,7 +95,37 @@
   [bgame runAction:[CCRotateBy actionWithDuration:2.0f angle:360]];
    
    
+  // banner test
+  NSLog(@"ADMOB");
+  CGSize size = [[CCDirector sharedDirector] winSize];
+
+  controller = [[RootViewController alloc]init];
+  controller.view.frame = CGRectMake(0,0,size.width,size.height);
+  
+  bannerView_ = [[GADBannerView alloc]
+                 initWithFrame:CGRectMake(150.150, size.height-GAD_SIZE_468x60.height-720,GAD_SIZE_468x60.width,GAD_SIZE_468x60.height)];
+  
+  bannerView_.adUnitID = ADMOB_UNIT_ID;
+  bannerView_.rootViewController = controller;
+  
+  [controller.view addSubview:bannerView_];
+  [[[CCDirector sharedDirector] openGLView]addSubview : controller.view];
+  
+  // 테스트 설정. 테스트 끝난 후 꼭 주석 처리    
+  //GADRequest* requestAd = [GADRequest request];  
+  //[requestAd setTestDevices: [NSArray arrayWithObjects:[[UIDevice currentDevice] uniqueIdentifier], nil]];
+  //[bannerView_ loadRequest:[GADRequest request]];
+  
+  [bannerView_ loadRequest:[GADRequest request]];
+
+  //
+  
 }
+
+
+-(void)AdMob{
+}
+
 
 -(void) newGameTouched:(id)sender
 { 

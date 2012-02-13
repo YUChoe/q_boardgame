@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 
+#import "GADBannerView.h"
+#import "RootViewController.h"
+
 @interface menuLayer : CCLayer {
   UIButton *newGameButton;
   //UIButton *continueButton;
@@ -16,6 +19,8 @@
   UIButton *creditsButton;
   
   
+  GADBannerView *bannerView_;
+  RootViewController *controller;
 }
 
 +(CCScene *) scene;
